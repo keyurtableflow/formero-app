@@ -1,0 +1,375 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 overflow-scroll bg-card dark:bg-transparent p-8">
+    <div class="mb-8">
+        <a class="inline-flex items-center leading-6 text-primary hover:underline" routerLink="/company/list">
+            <span class="inline-flex items-center text-[#00E0AC]">
+                <mat-icon class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:arrow-small-left'"></mat-icon>
+                <span class="ml-1.5 font-medium leading-5">Back to list</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="">
+
+        <div class="title mb-8">
+            <h2 class="text-3xl "><strong>{{companyId ? 'Edit' : 'Add'}} Company</strong></h2>
+        </div>
+
+        <div class="flex flex-col pt-0">
+
+            <form class="p-4" [formGroup]="verticalStepperForm">
+                <mat-vertical-stepper [linear]="true" #verticalStepper>
+                    <mat-step [formGroupName]="'companyDetails'"
+                        [stepControl]="verticalStepperForm.get('companyDetails')" #verticalStepperStep1>
+                        <ng-template matStepLabel>Company Details</ng-template>
+
+                        <div class="row flex w-full gap-[2em] mb-4">
+                            <mat-form-field class="w-full col-6">
+                                <mat-label>Company Name</mat-label>
+                                <input matInput [formControlName]="'name'">
+                                <mat-error>Company name is required!</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="w-full col-6">
+                                <mat-label>Description</mat-label>
+                                <input matInput [formControlName]="'description'">
+                                <mat-error>Description is required!</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="row flex w-full gap-[2em] mb-4">
+                            <mat-form-field class="w-full col-lg-6">
+                                <mat-label>Company Email</mat-label>
+                                <input matInput [formControlName]="'company_email'">
+                                <mat-error>Company email is required!</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="w-full col-lg-6">
+                                <mat-label>Phone Number</mat-label>
+                                <input matInput [formControlName]="'phone_number'">
+                                <mat-error>Phone number is required!</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="row flex w-full gap-[2em] mb-4">
+                            <mat-form-field class="w-full col-lg-6">
+                                <mat-label>Tags</mat-label>
+                                <!-- <mat-select [placeholder]="'Select Role'" [formControlName]="'tags'">
+                        <mat-option [value]="role?._id" *ngFor="let role of roleList">{{ role?.name }}</mat-option>
+                    </mat-select> -->
+                                <input matInput [formControlName]="'tags'">
+                            </mat-form-field>
+                            <mat-form-field class="w-full">
+                                <mat-label>Lists</mat-label>
+                                <input matInput [formControlName]="'lists'">
+                            </mat-form-field>
+                        </div>
+                        <div class="row flex w-full gap-[2em] mb-4">
+                            <mat-form-field class="w-full">
+                                <mat-label>Type</mat-label>
+                                <input matInput [formControlName]="'type'">
+                            </mat-form-field>
+
+                            <mat-form-field class="w-full">
+                                <mat-label>Process</mat-label>
+                                <mat-select [placeholder]="'Select Process'" [formControlName]="'available_processes'">
+                                    <mat-option [value]="process?._id" *ngFor="let procecss of roleList">{{
+                                        procecss?.name
+                                        }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="row flex w-full gap-[2em] mb-4">
+                            <mat-form-field class="w-full col-lg-6">
+                                <mat-label>Website</mat-label>
+                                <input matInput [formControlName]="'website'">
+                            </mat-form-field>
+
+                            <mat-form-field class="w-full col-lg-6">
+                                <mat-label>Currency</mat-label>
+                                <input matInput [formControlName]="'currency'">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="row flex w-full gap-[2em] mb-4">
+                            <mat-form-field class="w-full col-lg-6">
+                                <mat-label>Payment Terms</mat-label>
+                                <input matInput [formControlName]="'payment_terms'">
+                            </mat-form-field>
+
+                            <mat-form-field class="w-full col-lg-6">
+                                <mat-label>Payment Status</mat-label>
+                                <input matInput [formControlName]="'payment_status'">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="row flex w-full gap-[2em] mb-4">
+                            <mat-form-field class="w-full col-lg-6">
+                                <mat-label>Notes Timeline</mat-label>
+                                <input matInput [formControlName]="'notes_timeline'">
+                            </mat-form-field>
+
+                            <div class="w-full col-lg-6">
+                                <mat-label>Document</mat-label>
+                                <!-- <input matInput [formControlName]="'documents'"> -->
+                                <input type="file" class="file-input" [formControlName]="'documents'" #fileUpload>
+                            </div>
+                        </div>
+
+                        <div class="row flex w-full gap-[2em] mb-4">
+                            <mat-form-field class="w-full col-lg-6">
+                                <mat-label>Quotes Opportunity</mat-label>
+                                <input matInput [formControlName]="'quotes_opportunity'">
+                            </mat-form-field>
+
+                            <div class="w-full col-lg-6">
+
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button class="px-8 bg-[#00E0AC] text-white" mat-flat-button
+                                [disabled]="verticalStepperStep1.stepControl.invalid" type="button" matStepperNext>
+                                Next
+                            </button>
+                        </div>
+                    </mat-step>
+
+                    <mat-step [stepControl]="verticalStepperForm.get('companyContacts')" #verticalStepperStep2>
+                        <ng-template matStepLabel>Company Contacts</ng-template>
+
+                        <form formArrayName="companyContacts">
+                            <cdk-accordion class="example-accordion my-4">
+                                <cdk-accordion-item *ngFor="let item of items.controls; let i = index"
+                                    #accordionItem="cdkAccordionItem" class="example-accordion-item" role="button"
+                                    tabindex="0" [attr.id]="'accordion-header-' + i"
+                                    [attr.aria-expanded]="accordionItem.expanded"
+                                    [attr.aria-controls]="'accordion-body-' + i">
+                                    <div class="example-accordion-item-header" (click)="accordionItem.toggle()">
+                                        {{ item?.get('first_name')?.value != '' ? item?.get('first_name')?.value :
+                                        "Contact " + i }}
+                                        <span class="example-accordion-item-description">
+                                            Click to {{ accordionItem.expanded ? 'close' : 'open' }}
+                                        </span>
+                                    </div>
+                                    <div class="example-accordion-item-body" role="region"
+                                        [style.display]="accordionItem.expanded ? '' : 'none'"
+                                        [attr.id]="'accordion-body-' + i"
+                                        [attr.aria-labelledby]="'accordion-header-' + i">
+                                        <div [formGroupName]="i">
+                                            <div class="row flex w-full gap-[2em] mb-4">
+                                                <mat-form-field class="w-full col-6">
+                                                    <mat-label>First Name</mat-label>
+                                                    <input matInput [formControlName]="'first_name'">
+                                                    <mat-error>First name is required!</mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field class="w-full col-6">
+                                                    <mat-label>Last Name</mat-label>
+                                                    <input matInput [formControlName]="'last_name'">
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="row flex w-full gap-[2em] mb-4">
+                                                <mat-form-field class="w-full col-lg-6">
+                                                    <mat-label>Position</mat-label>
+                                                    <input matInput [formControlName]="'position'">
+                                                    <mat-error>Position is required!</mat-error>
+                                                </mat-form-field>
+                                                <mat-form-field class="w-full">
+                                                    <mat-label>Mobile Number</mat-label>
+                                                    <input matInput [formControlName]="'mobile_number'">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="row flex w-full gap-[2em] mb-4">
+                                                <mat-form-field class="w-full">
+                                                    <mat-label>Tags</mat-label>
+                                                    <input matInput [formControlName]="'tags'">
+                                                </mat-form-field>
+
+                                                <mat-form-field class="w-full">
+                                                    <mat-label>Lists</mat-label>
+                                                    <input matInput [formControlName]="'lists'">
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="row flex w-full gap-[2em] mb-4">
+                                                <mat-form-field class="w-full">
+                                                    <mat-label>Phone Number (Work)</mat-label>
+                                                    <input matInput [formControlName]="'phone_number_work'">
+                                                </mat-form-field>
+
+                                                <mat-form-field class="w-full">
+                                                    <mat-label>Assign</mat-label>
+                                                    <mat-select [placeholder]="'Select Process'"
+                                                        [formControlName]="'assigned_to'">
+                                                        <mat-option [value]="process?._id"
+                                                            *ngFor="let procecss of roleList">{{
+                                                            procecss?.name
+                                                            }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="row flex w-full gap-[2em] mb-4">
+                                                <mat-form-field class="w-full col-lg-6">
+                                                    <mat-label>Work Email</mat-label>
+                                                    <input matInput [formControlName]="'email'">
+                                                    <mat-error>Email is required!</mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field class="w-full col-lg-6">
+                                                    <mat-label>Personal Email</mat-label>
+                                                    <input matInput [formControlName]="'email_1'">
+                                                    <mat-error>Email is required!</mat-error>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="row flex w-full gap-[2em] mb-4">
+                                                <mat-form-field class="w-full col-lg-6">
+                                                    <mat-label>Linkedin</mat-label>
+                                                    <input matInput [formControlName]="'linkedin'">
+                                                </mat-form-field>
+
+                                                <mat-form-field class="w-full col-lg-6">
+                                                    <mat-label>Main Industry type</mat-label>
+                                                    <input matInput [formControlName]="'main_industry_type'">
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="row flex w-full gap-[2em] mb-4">
+                                                <mat-form-field class="w-full col-lg-6">
+                                                    <mat-label>Contact Type</mat-label>
+                                                    <input matInput [formControlName]="'contact_type'">
+                                                </mat-form-field>
+
+                                                <mat-form-field class="w-full col-lg-6">
+                                                    <mat-label>Follow Up Date</mat-label>
+                                                    <input matInput [formControlName]="'follow_up_date'">
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="row flex w-full gap-[2em] mb-4">
+                                                <mat-checkbox [color]="'primary'" [formControlName]="'do_not_call'"
+                                                    class="w-50 col-lg-4">
+                                                    Do Not Call
+                                                </mat-checkbox>
+                                                <mat-form-field class="w-full col-lg-8">
+                                                    <mat-label>Do Not Call Reason</mat-label>
+                                                    <input matInput [formControlName]="'do_not_call_reason'">
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="row flex w-full gap-[2em] mb-4">
+                                                <mat-checkbox [color]="'primary'" [formControlName]="'do_not_mail'"
+                                                    class="w-50 col-lg-4">
+                                                    Do Not Mail
+                                                </mat-checkbox>
+                                                <mat-form-field class="w-full col-lg-8">
+                                                    <mat-label>Do Not Mail Reason</mat-label>
+                                                    <input matInput [formControlName]="'do_not_mail_reason'">
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="row flex w-full gap-[2em] mb-4">
+                                                <mat-checkbox [color]="'primary'" [formControlName]="'do_not_sms'"
+                                                    class="w-50 col-lg-4">
+                                                    Do Not SMS
+                                                </mat-checkbox>
+                                                <mat-form-field class="w-full col-lg-8">
+                                                    <mat-label>Do Not SMS Reason</mat-label>
+                                                    <input matInput [formControlName]="'do_not_sms_reason'">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </cdk-accordion-item>
+                            </cdk-accordion>
+                        </form>
+
+                        <div class="flex justify-end">
+                            <button class="px-8 bg-[#00E0AC] text-white mr-2" mat-flat-button type="button"
+                                (click)="addContact()">
+                                Add another contact
+                            </button>
+                            <button class="px-8 mr-2" mat-flat-button [color]="'accent'" type="button"
+                                matStepperPrevious>
+                                Back
+                            </button>
+                            <button class="px-8" mat-flat-button [color]="'primary'"
+                                [disabled]="verticalStepperStep2.stepControl.invalid" type="button" matStepperNext>
+                                Next
+                            </button>
+                        </div>
+                    </mat-step>
+
+                    <mat-step [stepControl]="verticalStepperForm.get('companyAddresses')" #verticalStepperStep3>
+                        <ng-template matStepLabel>Company Address</ng-template>
+                        <form formArrayName="companyAddresses">
+                            <cdk-accordion class="example-accordion my-4">
+                                <cdk-accordion-item *ngFor="let item of address.controls; let i = index"
+                                    #accordionItem="cdkAccordionItem" class="example-accordion-item" role="button"
+                                    tabindex="0" [attr.id]="'accordion-header-' + i"
+                                    [attr.aria-expanded]="accordionItem.expanded"
+                                    [attr.aria-controls]="'accordion-body-' + i">
+                                    <div class="example-accordion-item-header" (click)="accordionItem.toggle()">
+                                        {{ item?.get('address_type')?.value != '' ? item?.get('address_type')?.value :
+                                        "Address " + i }}
+                                        <span class="example-accordion-item-description">
+                                            Click to {{ accordionItem.expanded ? 'close' : 'open' }}
+                                        </span>
+                                    </div>
+                                    <div class="example-accordion-item-body" role="region"
+                                        [style.display]="accordionItem.expanded ? '' : 'none'"
+                                        [attr.id]="'accordion-body-' + i"
+                                        [attr.aria-labelledby]="'accordion-header-' + i">
+                                        <div [formGroupName]="i">
+                                            <div class="row flex w-full gap-[2em] mb-4">
+                                                <mat-form-field class="w-full col-lg-6">
+                                                    <mat-label>Address Type</mat-label>
+                                                    <input matInput [formControlName]="'address_type'">
+                                                </mat-form-field>
+                                                <mat-checkbox [color]="'primary'" [formControlName]="'isPrimary'"
+                                                    class="w-full col-lg-6">
+                                                    Is Primary
+                                                </mat-checkbox>
+                                            </div>
+
+                                            <div class="row flex w-full gap-[2em] mb-4">
+                                                <mat-form-field class="w-full col-lg-6">
+                                                    <mat-label>Address</mat-label>
+                                                    <input matInput [formControlName]="'address'">
+                                                </mat-form-field>
+
+                                                <div class="w-full col-lg-6">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </cdk-accordion-item>
+                            </cdk-accordion>
+                        </form>
+                        <div class="flex justify-end mt-8">
+                            <div class="flex justify-start">
+                                <button class="px-8 bg-[#00E0AC] text-white mr-2" mat-flat-button type="button"
+                                    (click)="addAddress()">
+                                    Add another address
+                                </button>
+                            </div>
+                            <button class="px-8 mr-2" mat-flat-button [color]="'accent'" type="button"
+                                matStepperPrevious>
+                                Back
+                            </button>
+                            <button class="px-8" mat-flat-button [color]="'primary'" type="button"
+                                [disabled]="verticalStepperStep3.stepControl.invalid" (click)="submitForm()">
+                                Submit
+                            </button>
+                        </div>
+                    </mat-step>
+                </mat-vertical-stepper>
+            </form>
+
+        </div>
+    </div>
+</div>

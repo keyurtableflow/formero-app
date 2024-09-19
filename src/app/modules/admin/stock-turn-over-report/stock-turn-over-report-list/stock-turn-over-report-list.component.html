@@ -1,0 +1,165 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent">
+
+    <!-- Header -->
+    <div
+        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+        <!-- Loader -->
+        <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <!-- Title -->
+        <div class="text-4xl font-extrabold tracking-tight">Stock turn over report </div>
+        <!-- Actions -->
+        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4 sm:w-2/4">
+            <!-- Search -->
+            <mat-label class="content-normal pr-2">From</mat-label>
+            <mat-form-field class="w-full -mb-4 mr-4 col-lg-6 fuse-mat-dense">
+                <input [matDatepicker]="picker1" matInput  [(ngModel)]="fromDate">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+
+            <mat-label class="content-normal pr-2">To</mat-label>
+            <mat-form-field class="w-full -mb-4 col-lg-6 fuse-mat-dense">
+                <input [matDatepicker]="picker2" matInput  [(ngModel)]="toDate">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+
+
+            <button class="w-3/4 ml-4 text-white bg-[#00E0AC]" mat-flat-button (click)="runReport()">
+                <span class="ml-2 mr-1">Run report</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="flex flex-auto overflow-hidden">
+        <!-- Measurenment list -->
+        <div class="flex flex-auto flex-col overflow-hidden mb-10 h-50 sm:h-32">
+            <div class="overflow-auto">
+                <table mat-table [dataSource]="reportList"  class="min-w-full mat-elevation-z8" matSort
+                    matSortDisableClear >
+                    <ng-container matColumnDef="date_range">
+                        <th class="text-md w-64  font-semibold text-secondary pl-8 bg-gray-50 dark:bg-black dark:bg-opacity"
+                            mat-header-cell *matHeaderCellDef mat-sort-header></th>
+                        <td class="pl-8" mat-cell *matCellDef="let reportList">{{reportList?.selectedRange?.from  | date:'dd/MM/y'}} {{reportList?.selectedRange?.from && reportList?.selectedRange?.to ? '-' : ''}}  {{reportList?.selectedRange?.to | date:'dd/MM/y'}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="opening_stock">
+                        <th class="text-md font-semibold text-secondary pl-8 bg-gray-50 dark:bg-black dark:bg-opacity"
+                            mat-header-cell *matHeaderCellDef mat-sort-header>Opening stock</th>
+                        <td class="pl-8" mat-cell *matCellDef="let reportList">{{ reportList?.opening_stock?.toFixed(2) | currency:'USD'}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="closing_stock">
+                        <th class="text-md font-semibold text-secondary pl-8 bg-gray-50 dark:bg-black dark:bg-opacity"
+                            mat-header-cell *matHeaderCellDef mat-sort-header>Closing stock</th>
+                        <td class="pl-8" mat-cell *matCellDef="let reportList">{{ reportList?.closing_stock?.toFixed(2) | currency:'USD'}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="stock_added">
+                        <th class="text-md font-semibold text-secondary pl-8 bg-gray-50 dark:bg-black dark:bg-opacity"
+                            mat-header-cell *matHeaderCellDef mat-sort-header>Stock added</th>
+                        <td class="pl-8" mat-cell *matCellDef="let reportList">{{ reportList?.stock_added?.toFixed(2) | currency:'USD'}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="stock_removed">
+                        <th class="text-md font-semibold text-secondary pl-8 bg-gray-50 dark:bg-black dark:bg-opacity"
+                            mat-header-cell *matHeaderCellDef mat-sort-header>Stock removed</th>
+                        <td class="pl-8" mat-cell *matCellDef="let reportList">{{ reportList?.stock_removed?.toFixed(2) | currency:'USD'}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="net_stock_movement">
+                        <th class="text-md font-semibold text-secondary pl-8 bg-gray-50 dark:bg-black dark:bg-opacity"
+                            mat-header-cell *matHeaderCellDef mat-sort-header>Net stock movement</th>
+                        <td class="pl-8" mat-cell *matCellDef="let reportList">{{ reportList?.net_stock_movement?.toFixed(2) | currency:'USD'}}</td>
+                    </ng-container>
+
+
+                    <!-- Header -->
+                    <tr class="bg-gray-50 h-12" mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+                    <!-- Rows -->
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+            <ng-container *ngIf="reportList?.data?.length == 0 || !reportList?.data">
+                <div class="px-8 py-4 border-t text-2xl font-semibold tracking-tight text-center">There are no
+                    stock turn over report for selected date range!</div>
+            </ng-container>
+        </div>
+
+
+    </div>
+
+    <div class="flex flex-auto overflow-hidden ">
+        <!-- Measurenment list -->
+        <div class="flex flex-auto flex-col overflow-hidden sm:mb-18">
+            <div class="text-xl ml-8 mb-3 font-bold">Per product breakdown</div>
+
+            <div class="overflow-x-auto">
+                <table mat-table [dataSource]="productBreakDownReportList" matSort class="min-w-full mat-elevation-z8" matSort
+                    matSortDisableClear (matSortChange)="sortData($event)">
+                    <!-- Columns -->
+
+                    <ng-container matColumnDef="product_id">
+                        <th class="text-md w-64 font-semibold text-secondary pl-8 bg-gray-50 dark:bg-black dark:bg-opacity"
+                            mat-header-cell *matHeaderCellDef mat-sort-header>Product</th>
+                        <td class="pl-8" mat-cell *matCellDef="let productBreakDownReportList">{{ productBreakDownReportList?.product_name}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="opening_stock">
+                        <th class="text-md font-semibold text-secondary pl-8 bg-gray-50 dark:bg-black dark:bg-opacity"
+                            mat-header-cell *matHeaderCellDef mat-sort-header>Opening stock</th>
+                        <td class="pl-8" mat-cell *matCellDef="let productBreakDownReportList">{{ productBreakDownReportList?.opening_stock?.toFixed(2) | currency:'USD'}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="closing_stock">
+                        <th class="text-md font-semibold text-secondary pl-8 bg-gray-50 dark:bg-black dark:bg-opacity"
+                            mat-header-cell *matHeaderCellDef mat-sort-header>Closing stock</th>
+                        <td class="pl-8" mat-cell *matCellDef="let productBreakDownReportList">{{ productBreakDownReportList?.closing_stock?.toFixed(2) | currency:'USD'}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="stock_added">
+                        <th class="text-md font-semibold text-secondary pl-8 bg-gray-50 dark:bg-black dark:bg-opacity"
+                            mat-header-cell *matHeaderCellDef mat-sort-header>Stock added</th>
+                        <td class="pl-8" mat-cell *matCellDef="let productBreakDownReportList">{{ productBreakDownReportList?.stock_added?.toFixed(2) | currency:'USD'}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="stock_removed">
+                        <th class="text-md font-semibold text-secondary pl-8 bg-gray-50 dark:bg-black dark:bg-opacity"
+                            mat-header-cell *matHeaderCellDef mat-sort-header>Stock removed</th>
+                        <td class="pl-8" mat-cell *matCellDef="let productBreakDownReportList">{{ productBreakDownReportList?.stock_removed?.toFixed(2) | currency:'USD'}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="net_stock_movement">
+                        <th class="text-md font-semibold text-secondary pl-8 bg-gray-50 dark:bg-black dark:bg-opacity"
+                            mat-header-cell *matHeaderCellDef mat-sort-header>Net stock movement</th>
+                        <td class="pl-8" mat-cell *matCellDef="let productBreakDownReportList">{{ productBreakDownReportList?.net_stock_movement?.toFixed(2) | currency:'USD'}}</td>
+                    </ng-container>
+
+
+
+                    <!-- Header -->
+                    <tr class="bg-gray-50 h-12" mat-header-row *matHeaderRowDef="productBreakDownColumn;sticky: true"></tr>
+                    <!-- Rows -->
+                    <tr mat-row *matRowDef="let row; columns: productBreakDownColumn;"></tr>
+                </table>
+            </div>
+            <ng-container *ngIf="reportList?.data?.length == 0 || !reportList?.data">
+                <div class="p-8 sm:p-16 border-t text-2xl font-semibold tracking-tight text-center">There are no
+                    stock turn over report for per product breakdoen!</div>
+            </ng-container>
+            <mat-paginator
+                class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                [ngClass]="{'pointer-events-none': isLoading}" [length]="totalRecords" [pageIndex]="currentPage"
+                (page)="onPageChange($event)" (pageSizeChange)="onPageSizeChange($event)" [pageSize]="pageSize"
+                [pageSizeOptions]="[5, 10, 25, 100]" [showFirstLastButtons]="true"></mat-paginator>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>

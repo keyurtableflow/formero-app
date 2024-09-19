@@ -1,0 +1,35 @@
+/* ----------------------------------------------------------------------------------------------------- */
+/*  @ Import/write your custom styles here.
+/*  @ Styles from this file will override 'vendors.scss' and Formero's base styles.
+/* ----------------------------------------------------------------------------------------------------- */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+.mat-mdc-snack-bar-container {
+    border-radius: 6px;
+
+    .mdc-snackbar__surface {
+        background-color: transparent !important;
+
+        .mat-mdc-snack-bar-label {
+            color: #000 !important;
+        }
+    }
+
+    &.success {
+        background-color: #eeffe8 !important;
+        border: 1px solid #bdffa3;
+        color: #000 !important;
+    }
+
+    &.error {
+        background-color: #fff4f4 !important;
+        border: 1px solid #ffbaba;
+        color: #000 !important;
+    }
+}

@@ -1,0 +1,97 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 overflow-scroll bg-card dark:bg-transparent p-8">
+    <div class="mb-8">
+        <a class="inline-flex items-center leading-6 text-primary hover:underline" routerLink="/stockable-products/list">
+            <span class="inline-flex items-center text-[#00E0AC]">
+                <mat-icon class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:arrow-small-left'"></mat-icon>
+                <span class="ml-1.5 font-medium leading-5">Back to list</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="">
+
+        <div class="title mb-8">
+            <h2 class="text-3xl "><strong>{{stockableProductId ? 'Edit' : 'Create'}} Stockable product</strong></h2>
+        </div>
+
+        <div class="flex flex-col pt-0">
+
+            <form [formGroup]="stockableProductForm" class="flex flex-col items-start">
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-1/2 pr-4 col-lg-6">
+                        <mat-label>Product</mat-label>
+                        <mat-select [placeholder]="'Select product'" [formControlName]="'product_id'" (selectionChange)="onProductChange($event)">
+                            <mat-option [value]="product?._id"
+                                *ngFor="let product of productList">{{product?.name}}</mat-option>
+                        </mat-select>
+                        <mat-error>Product is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>SKU</mat-label>
+                        <input  matInput [formControlName]="'sku'">
+                        <mat-error>SKU is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Name</mat-label>
+                        <input  matInput [formControlName]="'name'">
+                        <mat-error>Name is required!</mat-error>
+                    </mat-form-field>
+
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Supplier</mat-label>
+                        <mat-select [placeholder]="'Select supplier'" [formControlName]="'supplier_id'">
+                            <mat-option [value]="supplier?._id"
+                                *ngFor="let supplier of supplierList">{{supplier?.name}}</mat-option>
+                        </mat-select>
+                        <mat-error>Supplier is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Unit of measurement</mat-label>
+                        <mat-select [placeholder]="'Select Unit of measurement'" [formControlName]="'measurement_id'"  (selectionChange)="onMeasurementChange($event)">
+                            <mat-option [value]="measurement?._id"
+                                *ngFor="let measurement of measurementList">{{measurement?.name}}</mat-option>
+                        </mat-select>
+                        <mat-error>Unit of measurement is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Stock ratio</mat-label>
+                        <input type="number" matInput [formControlName]="'stock_ratio'">
+                        <mat-error>Stock ratio is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Default reorder quantity</mat-label>
+                        <input type="number" matInput formControlName="default_reorder_quantity">
+                        <mat-error>Default reorder quantity is required!</mat-error>
+                      </mat-form-field>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <div *ngIf="stockableProductForm.get('default_reorder_quantity')?.value && selectedMeasurement?.short_hand && stockableProductForm.get('stock_ratio')?.value && selectedProduct?.measurementData?.short_hand" class="w-full col-lg-6 content-center">
+                      <div class="rounded-lg bg-gray-200 px-5 py-4 dark:bg-gray-800">
+                       <span class="text-md font-bold"> {{stockableProductForm.get('default_reorder_quantity')?.value}}  </span> {{selectedMeasurement?.short_hand}} will equal  <span class="text-md font-bold"> {{stockableProductForm.get('default_reorder_quantity')?.value * stockableProductForm.get('stock_ratio').value}}  </span> {{selectedProduct?.measurementData?.short_hand}}
+                      </div>
+                    </div>
+                  </div>
+            </form>
+
+            <div class="mt-12 flex self-end">
+                <button mat-raised-button (click)="submitForm()" class="text-white bg-[#00E0AC]">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

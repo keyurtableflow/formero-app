@@ -1,0 +1,98 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 overflow-scroll bg-card dark:bg-transparent p-8">
+    <div class="mb-8">
+        <a class="inline-flex items-center leading-6 text-primary hover:underline" routerLink="/part/list">
+            <span class="inline-flex items-center text-[#00E0AC]">
+                <mat-icon class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:arrow-small-left'"></mat-icon>
+                <span class="ml-1.5 font-medium leading-5">Back to list</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="">
+
+        <div class="title mb-8">
+            <h2 class="text-3xl "><strong>{{partId ? 'Edit Part' : 'Add Part'}}</strong></h2>
+        </div>
+
+        <div class="flex flex-col pt-0">
+
+            <form [formGroup]="configForm" class="flex flex-col items-start">
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-6">
+                        <mat-label>Part Name</mat-label>
+                        <input matInput [formControlName]="'part_name'">
+                        <mat-error>Part name is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-6">
+                        <mat-label>Part Number</mat-label>
+                        <input matInput [formControlName]="'part_number'">
+                        <mat-error>Part number is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Company</mat-label>
+                        <mat-select [placeholder]="'Select Company'" [formControlName]="'companyId'">
+                            <mat-option [value]="company?._id" *ngFor="let company of companyList">{{ company?.name }}</mat-option>
+                        </mat-select>
+                        <mat-error>Company is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="w-full">
+                        <mat-label>Order No</mat-label>
+                        <input matInput [formControlName]="'original_order_no'">
+                        <mat-error>Order no is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Rev</mat-label>
+                        <input matInput [formControlName]="'rev'">
+                        <mat-error>Rev is required!</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full">
+                        <mat-label>Notes</mat-label>
+                        <input matInput [formControlName]="'notes'">
+                        <mat-error>Notes is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full">
+                        <mat-label>Attachment</mat-label>
+                        <input matInput [formControlName]="'attachment'">
+                        <mat-error>Attachment is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Current Stock</mat-label>
+                        <input matInput type="number" [formControlName]="'current_stock'">
+                        <mat-error>Current stock is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Max Stock</mat-label>
+                        <input matInput type="number" [formControlName]="'max_stock'">
+                        <mat-error>Max stock is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Replenish At</mat-label>
+                        <input matInput type="number" [formControlName]="'replenish_at'">
+                        <mat-error>Replenish at is required!</mat-error>
+                    </mat-form-field>
+                </div>
+            </form>
+
+            <div class="mt-12 flex self-end">
+                <button mat-flat-button (click)="submit()" class="text-white bg-[#00E0AC]">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

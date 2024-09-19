@@ -1,0 +1,247 @@
+<div
+    class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 overflow-scroll bg-card dark:bg-transparent p-8"
+>
+    <div class="mb-4">
+        <a
+            style="cursor: pointer"
+            class="inline-flex items-center leading-6 text-primary hover:underline"
+            [routerLink]="['/promotion']"
+        >
+            <span class="inline-flex items-center text-[#00E0AC]">
+                <mat-icon
+                    class="icon-size-5 text-current"
+                    [svgIcon]="'heroicons_solid:arrow-small-left'"
+                ></mat-icon>
+                <span class="ml-1.5 font-medium leading-5">Back to list</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="">
+        <div class="title mb-4">
+            <h2 class="text-3xl">
+                <strong>{{ promotionId ? "Edit" : "Create" }} promotion</strong>
+            </h2>
+        </div>
+
+        <div class="flex flex-col pt-0">
+            <form
+                [formGroup]="promotionFrom"
+                class="flex flex-col items-start"
+                (submit)="submitForm()"
+            >
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-checkbox formControlName="is_active"
+                        >Active</mat-checkbox
+                    >
+                </div>
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-1/2">
+                        <mat-label>Name</mat-label>
+                        <input
+                            matInput
+                            placeholder="Enter promotion name"
+                            formControlName="name"
+                        />
+                        <mat-error>Name is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div
+                    class="row w-full gap-[2em] mb-4"
+                    [formGroupName]="'qualifiers'"
+                >
+                    <span class="block mb-3 text-2xl font-semibold"
+                        >Qualifiers</span
+                    >
+                    <div class="flex gap-[2em]">
+                        <mat-checkbox
+                            class="w-full"
+                            [formControlName]="'is_code'"
+                            >Using a promotional code</mat-checkbox
+                        >
+                        <mat-form-field
+                            class="w-full"
+                            *ngIf="
+                                promotionFrom.get('qualifiers.is_code').value
+                            "
+                        >
+                            <mat-label>Code</mat-label>
+                            <input
+                                matInput
+                                placeholder="Enter promotion code"
+                                formControlName="code"
+                            />
+                            <mat-error>Code is required!</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex gap-[2em]">
+                        <mat-checkbox
+                            class="w-full"
+                            [formControlName]="'is_process'"
+                            >Specific process</mat-checkbox
+                        >
+                        <mat-form-field
+                            class="w-full"
+                            *ngIf="
+                                promotionFrom.get('qualifiers.is_process').value
+                            "
+                        >
+                            <mat-label>Processes</mat-label>
+                            <mat-select
+                                multiple="true"
+                                placeholder="Select processes"
+                                formControlName="processes"
+                            >
+                                <mat-option
+                                    [value]="process._id"
+                                    *ngFor="let process of processList"
+                                    >{{ process?.process_name }} ({{
+                                        process?.short_name
+                                    }})</mat-option
+                                >
+                            </mat-select>
+                            <mat-error>Processes is required!</mat-error>
+                        </mat-form-field>
+                        <mat-checkbox
+                            *ngIf="
+                                promotionFrom.get('qualifiers.processes')
+                                    .value != '' &&
+                                promotionFrom.get('qualifiers.is_process').value
+                            "
+                            class="w-full"
+                            formControlName="show_cta"
+                            >Show CTA</mat-checkbox
+                        >
+                    </div>
+                </div>
+                <div class="row w-full gap-[2em] mb-4" formGroupName="discount">
+                    <span class="block mb-3 text-2xl font-semibold"
+                        >Discount</span
+                    >
+                    <div class="flex gap-[2em]">
+                        <mat-form-field class="w-full">
+                            <mat-label>Discount method</mat-label>
+                            <mat-select
+                                placeholder="Select discount method"
+                                formControlName="method"
+                            >
+                                <mat-option [value]="1"
+                                    >Fixed Dollar</mat-option
+                                >
+                                <mat-option [value]="2">Percentage</mat-option>
+                            </mat-select>
+                            <mat-error>Discount method is required!</mat-error>
+                        </mat-form-field>
+                        <mat-form-field
+                            class="w-full"
+                            *ngIf="
+                                promotionFrom.get('discount.method').value ==
+                                '1'
+                            "
+                        >
+                            <mat-label>Discount dollar</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                placeholder="Enter amount"
+                                formControlName="dollar"
+                            />
+                            <mat-icon matPrefix>attach_money</mat-icon>
+                            <mat-error>Discount dollar is required!</mat-error>
+                        </mat-form-field>
+                        <mat-form-field
+                            class="w-full"
+                            *ngIf="
+                                promotionFrom.get('discount.method').value ==
+                                '2'
+                            "
+                        >
+                            <mat-label>Discount percentage</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                placeholder="Enter percentage"
+                                formControlName="percentage"
+                            />
+                            <mat-icon matSuffix>percent</mat-icon>
+                            <mat-error
+                                >Discount percentage is required!</mat-error
+                            >
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row w-full gap-[2em] mb-4" formGroupName="limit">
+                    <span class="block mb-3 text-2xl font-semibold"
+                        >Limits</span
+                    >
+                    <div class="flex gap-[2em] items-center">
+                        <mat-form-field class="w-1/2">
+                            <mat-label>Usage limit</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                placeholder="Enter usage limit"
+                                formControlName="usage"
+                            />
+                            <mat-error>Usage limit is required!</mat-error>
+                        </mat-form-field>
+                        <span
+                            class="ng-star-inserted text-lg w-full"
+                            *ngIf="promotionId"
+                            >Used {{ promotionFrom.get("used_count").value }}
+                            {{
+                                promotionFrom.get("used_count").value > 1
+                                    ? "times"
+                                    : "time"
+                            }}
+                            already</span
+                        >
+                    </div>
+                    <div class="flex gap-[2em]">
+                        <mat-form-field class="w-full">
+                            <mat-label>Start Date</mat-label>
+                            <input
+                                placeholder="Choose a start date"
+                                matInput
+                                formControlName="start_date"
+                                [matDatepicker]="spicker"
+                            />
+                            <mat-datepicker-toggle
+                                matIconSuffix
+                                [for]="spicker"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker #spicker></mat-datepicker>
+                            <mat-error>Start date is required!</mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="w-full">
+                            <mat-label>End Date</mat-label>
+                            <input
+                                placeholder="Choose an end date"
+                                matInput
+                                formControlName="end_date"
+                                [matDatepicker]="epicker"
+                            />
+                            <mat-datepicker-toggle
+                                matIconSuffix
+                                [for]="epicker"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker #epicker></mat-datepicker>
+                            <mat-error>End date is required!</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="mt-4 flex self-end">
+                    <button
+                        type="submit"
+                        [disabled]="promotionFrom.invalid"
+                        mat-raised-button
+                        class="text-white bg-[#00E0AC]"
+                    >
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 overflow-scroll bg-card dark:bg-transparent p-8">
+    <div class="mb-8">
+        <a class="inline-flex items-center leading-6 text-primary hover:underline" routerLink="/extras/list">
+            <span class="inline-flex items-center text-[#00E0AC]">
+                <mat-icon class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:arrow-small-left'"></mat-icon>
+                <span class="ml-1.5 font-medium leading-5">Back to list</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="">
+
+        <div class="title mb-8">
+            <h2 class="text-3xl "><strong>{{extrasId ? 'Edit' : 'Create'}} Extra</strong></h2>
+        </div>
+
+        <div class="flex flex-col pt-0">
+
+            <form [formGroup]="extrasForm" class="flex flex-col items-start">
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Name</mat-label>
+                        <input placeholder="Liter" matInput [formControlName]="'name'">
+                        <mat-error>Name is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field [ngClass]="formFieldHelpers" class="w-full col-lg-6">
+                        <mat-label>Price</mat-label>
+                        <div class="mr-2">$</div>
+                        <input type="number" matInput [formControlName]="'price'">
+
+                        <mat-error *ngIf="extrasForm.get('price').hasError('required')">Price is
+                            required!</mat-error>
+                        <mat-error *ngIf="extrasForm.get('price').hasError('pattern')">Enter a valid price
+                            number</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Short description</mat-label>
+                        <textarea matInput formControlName="description"></textarea>
+                    </mat-form-field>
+                </div>
+
+                <div class="mt-12 flex self-end">
+                    <button mat-raised-button type="submit" (click)="submitForm()" class="text-white bg-[#00E0AC]">
+                        Submit
+                    </button>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>

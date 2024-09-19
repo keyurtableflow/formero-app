@@ -1,0 +1,94 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 overflow-scroll bg-card dark:bg-transparent p-8">
+    <div class="mb-8">
+        <a class="inline-flex items-center leading-6 text-primary hover:underline" routerLink="/finishes/list">
+            <span class="inline-flex items-center text-[#00E0AC]">
+                <mat-icon class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:arrow-small-left'"></mat-icon>
+                <span class="ml-1.5 font-medium leading-5">Back to list</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="">
+
+        <div class="title mb-8">
+            <h2 class="text-3xl "><strong>{{finishesId ? 'Edit' : 'Add'}} Finishes</strong></h2>
+        </div>
+
+        <div class="flex flex-col pt-0">
+
+            <form [formGroup]="finishesForm" class="flex flex-col items-start">
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Finishes Name</mat-label>
+                        <input matInput [formControlName]="'finishing_name'">
+                        <mat-error>Finishes name is required!</mat-error>
+                    </mat-form-field>
+
+                    <!-- <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Price</mat-label>
+                        <input type="number" matInput [formControlName]="'price'">
+                        <mat-error *ngIf="finishesForm.get('price').hasError('required')">Price is required!</mat-error>
+                        <mat-error *ngIf="finishesForm.get('price').hasError('pattern')">Enter a valid Price</mat-error>
+                    </mat-form-field> -->
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Short description</mat-label>
+                        <textarea matInput formControlName="description"></textarea>
+                        <mat-error>Short description is required!</mat-error>
+                    </mat-form-field>
+
+                    <!-- <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Price comments</mat-label>
+                        <textarea matInput formControlName="price_comment"></textarea>
+                        <mat-error>Price comments is required!</mat-error>
+                    </mat-form-field> -->
+                </div>
+
+                <!-- <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Colours</mat-label>
+                        <mat-select placeholder="Select Colour" formControlName="colours" multiple>
+                            <app-select-all-option [model]="finishesForm.get('colours')" [values]="colourList">
+                            </app-select-all-option>
+                            <mat-option *ngFor="let color of colourList" [value]="color._id">
+                                <span class="color-display" [style.backgroundColor]="'#' + color.colour_code"></span>
+                                {{ color.colour_name }}</mat-option>
+                        </mat-select>
+                        <mat-error>Colours is required!</mat-error>
+                    </mat-form-field>
+
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Process</mat-label>
+                        <mat-select placeholder="Select Process" formControlName="available_processes" multiple>
+                            <app-select-all-option [model]="finishesForm.get('available_processes')" [values]="processList">
+                            </app-select-all-option>
+                            <mat-option *ngFor="let process of processList" [value]="process._id">{{ process.process_name | titlecase }}</mat-option>
+                        </mat-select>
+                        <mat-error>Process is required!</mat-error>
+                    </mat-form-field>
+                </div> -->
+
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <div class="w-full col-lg-6">
+                        <mat-checkbox [color]="'primary'" [formControlName]="'default_finish'">
+                            Default finish
+                        </mat-checkbox>
+                    </div>
+                </div>
+
+
+            </form>
+
+            <div class="mt-12 flex self-end">
+                <button mat-flat-button (click)="submitForm()" class="text-white bg-[#00E0AC]">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

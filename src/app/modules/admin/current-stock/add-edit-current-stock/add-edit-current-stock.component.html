@@ -1,0 +1,152 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 overflow-scroll bg-card dark:bg-transparent p-8">
+    <div class="mb-8">
+        <a class="inline-flex items-center leading-6 text-primary hover:underline" routerLink="/current-stock/list">
+            <span class="inline-flex items-center text-[#00E0AC]">
+                <mat-icon class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:arrow-small-left'"></mat-icon>
+                <span class="ml-1.5 font-medium leading-5">Back to list</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="">
+
+        <div class="title mb-8">
+            <h2 class="text-3xl "><strong>{{currentStocktId ? 'Edit' : 'Add'}} Stock</strong></h2>
+        </div>
+
+        <div class="flex flex-col pt-0">
+
+            <form [formGroup]="currentStocktForm" class="flex flex-col items-start">
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-1/2 pr-4 col-lg-6">
+                        <mat-label>Product</mat-label>
+                        <mat-select [placeholder]="'Select product'" [formControlName]="'product_id'"
+                            (selectionChange)="onProductChange($event)">
+                            <mat-option [value]="product?._id"
+                                *ngFor="let product of productList">{{product?.name}}</mat-option>
+                        </mat-select>
+                        <mat-error>Product is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+
+
+                <div class="row flex w-full gap-[2em] mb-4">
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Stockable product</mat-label>
+                        <mat-select [placeholder]="'Select stockable product'"
+                            [formControlName]="'stockable_product_id'"
+                            (selectionChange)="onStockableProductChange($event)">
+                            <mat-option [value]="stockableProduct?._id"
+                                *ngFor="let stockableProduct of stockableProductList">{{stockableProduct?.name}}</mat-option>
+                        </mat-select>
+                        <mat-error>Stockable product is required!</mat-error>
+                    </mat-form-field>
+
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Supplier</mat-label>
+                        <mat-select [placeholder]="'Select supplier'" [formControlName]="'supplier_id'">
+                            <mat-option [value]="supplier?._id"
+                                *ngFor="let supplier of supplierList">{{supplier?.name}}</mat-option>
+                        </mat-select>
+                        <mat-error>Supplier is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div *ngIf="selectedStockableProduct?.measurementData" class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>{{selectedStockableProduct?.measurementData?.plural}} to add</mat-label>
+                        <input type="number" matInput [formControlName]="'quantity'">
+                        <mat-error>{{selectedStockableProduct?.measurementData?.plural}} is required!</mat-error>
+                    </mat-form-field>
+
+                    <div class="row flex w-full gap-[2em] mb-4">
+                        <div class="content-center pt-4 w-full col-lg-6">
+                            <ng-container
+                                *ngIf="currentStocktForm.get('quantity')?.value && selectedStockableProduct?.measurementData?.short_hand && selectedStockableProduct?.name && currentStocktForm.get('quantity')?.value && selectedStockableProduct?.stock_ratio && selectedProduct?.measurementData?.short_hand && selectedProduct?.name">
+                                <div class="rounded-lg bg-gray-200 px-5 py-4 dark:bg-gray-800">
+
+                                    <span class="text-md font-bold"> {{currentStocktForm.get('quantity')?.value}}
+                                        {{selectedStockableProduct?.measurementData?.short_hand}} of
+                                        {{selectedStockableProduct?.name}} will add
+                                        {{currentStocktForm.get('quantity')?.value *
+                                        selectedStockableProduct?.stock_ratio}}
+                                        {{selectedProduct?.measurementData?.short_hand}} of {{selectedProduct?.name}}</span>
+
+
+                                </div>
+                            </ng-container>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Foreign value</mat-label>
+                        <input type="number" matInput [formControlName]="'foreign_value'">
+                        <mat-error>Foreign value is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Exchange rate</mat-label>
+                        <input type="number" matInput [formControlName]="'exchange_value'">
+                        <mat-error>Exchange rate is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <div class="w-full col-lg-6">
+                        <ng-container
+                            *ngIf="currentStocktForm.get('foreign_value')?.value && currentStocktForm.get('exchange_value')?.value">
+                            <div class="rounded-lg bg-gray-200 px-5 py-4 dark:bg-gray-800">
+                                <span class="text-md font-bold"> Resulting AUD Value: ${{
+                                    (currentStocktForm.get('foreign_value')?.value *
+                                    currentStocktForm.get('exchange_value')?.value).toFixed(2)}} </span>
+                            </div>
+                        </ng-container>
+
+
+                    </div>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Serial</mat-label>
+                        <input matInput [formControlName]="'serial_number'">
+                        <mat-error>Serial is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Batch number</mat-label>
+                        <input matInput [formControlName]="'batch_number'">
+                        <mat-error>Batch number is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-1/2 pr-3 col-lg-6">
+                        <mat-label>Expiry</mat-label>
+                        <input [matDatepicker]="picker1" matInput [formControlName]="'expiry_date'">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                        <mat-error>Expiry is required!</mat-error>
+                    </mat-form-field>
+
+
+                </div>
+
+            </form>
+
+            <div class="mt-12 flex self-end">
+                <button mat-raised-button (click)="submitForm()" class="text-white bg-[#00E0AC]">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

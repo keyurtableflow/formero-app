@@ -1,0 +1,160 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 overflow-scroll bg-card dark:bg-transparent p-8">
+    <div class="mb-8">
+        <a class="inline-flex items-center leading-6 text-primary hover:underline" routerLink="/material/list">
+            <span class="inline-flex items-center text-[#00E0AC]">
+                <mat-icon class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:arrow-small-left'"></mat-icon>
+                <span class="ml-1.5 font-medium leading-5">Back to list</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="">
+
+        <div class="title mb-8">
+            <h2 class="text-3xl "><strong>{{materialId ? 'Edit Material' : 'Add Material'}}</strong></h2>
+        </div>
+
+        <div class="flex flex-col pt-0">
+
+            <form [formGroup]="configForm" class="flex flex-col items-start">
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Material Name</mat-label>
+                        <input matInput [formControlName]="'material_name'">
+                        <mat-error>Material name is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+
+                <div class="row flex w-full gap-[2em] mb-4">
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Finishes</mat-label>
+                        <mat-select placeholder="Select Colour" formControlName="finishes_ids" multiple>
+                            <app-select-all-option [model]="configForm.get('finishes_ids')" [values]="finishesList">
+                            </app-select-all-option>
+                            <mat-option *ngFor="let finishes of finishesList" [value]="finishes._id">
+                                {{ finishes.finishing_name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Extras</mat-label>
+                        <mat-select placeholder="Select Colour" formControlName="extras_ids" multiple>
+                            <app-select-all-option [model]="configForm.get('extras_ids')" [values]="extrrasList">
+                            </app-select-all-option>
+                            <mat-option *ngFor="let extra of extrrasList" [value]="extra._id">
+                                {{ extra.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Description</mat-label>
+                        <textarea matInput formControlName="description"></textarea>
+                    </mat-form-field>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-6">
+                    <div>
+                        <mat-label>Spec Sheet</mat-label>
+
+                        <div class="pt-3">
+                            <div class="flex gap-3">
+                                <input type="file" accept=".pdf" (change)="onFileSelected($event)" style="display: none;"
+                                #fileInput>
+                            <div class="flex items-end">
+                                <button mat-raised-button class="text-white bg-[#00E0AC] " type="button"
+                                    (click)="fileInput.click()">Upload Spec Sheet</button>
+                            </div>
+                            <a class="hover:text-[#00E0AC] content-center" *ngIf="uploadedFile" (click)="downloadFileLocal(uploadedFile)" style="cursor: pointer;">{{uploadedFile.name}}</a>
+                            <a class="hover:text-[#00E0AC] content-center" *ngIf="serverFileName && !uploadedFile" [href]="serverFileUrl" download>{{serverFileName}}</a>
+                            <button class="hover:text-[#00E0AC] content-center" mat-icon-button *ngIf="uploadedFile || serverFileName" (click)="removeFile()">
+                                <mat-icon>cancel</mat-icon>
+                              </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field [ngClass]="formFieldHelpers" class="w-full col-lg-6">
+                        <mat-label>Thickness</mat-label>
+                        <input type="number" matInput [formControlName]="'thickness'">
+                        <div>mu</div>
+                    </mat-form-field>
+
+                    <mat-form-field [ngClass]="formFieldHelpers" class="w-full col-lg-6">
+                        <mat-label>Filling</mat-label>
+                        <input type="number" matInput [formControlName]="'filling'">
+                        <div>percent</div>
+                    </mat-form-field>
+
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Thickness comments</mat-label>
+                        <textarea matInput formControlName="thickness_comment"></textarea>
+                    </mat-form-field>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Set-up fee</mat-label>
+                        <input type="number" matInput [formControlName]="'set_up_fee'">
+                        <mat-error *ngIf="configForm.get('set_up_fee').hasError('required')">Set-up fee is required!</mat-error>
+                        <mat-error *ngIf="configForm.get('set_up_fee').hasError('pattern')">Enter a valid set-up fee</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Minimum material order value</mat-label>
+                        <input type="number" matInput [formControlName]="'order_value'">
+
+                        <mat-error *ngIf="configForm.get('order_value').hasError('required')">Minimum material order value is required!</mat-error>
+                        <mat-error *ngIf="configForm.get('order_value').hasError('pattern')">Enter a valid minimum material order value</mat-error>
+                    </mat-form-field>
+
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <p class="font-bold underline">Max printer size</p>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+
+                    <mat-form-field class="w-full col-lg-4">
+                        <mat-label>Max print size in mm -x</mat-label>
+                        <input type="number" matInput [formControlName]="'length'">
+                        <mat-error *ngIf="configForm.get('length').hasError('required')">Max print size in mm -x is required!</mat-error>
+                        <mat-error *ngIf="configForm.get('length').hasError('pattern')">Enter a valid max print size in mm -x</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-4">
+                        <mat-label>Max print size in mm -y</mat-label>
+                        <input type="number" matInput [formControlName]="'width'">
+                        <mat-error *ngIf="configForm.get('width').hasError('required')">Max print size in mm -y is required!</mat-error>
+                        <mat-error *ngIf="configForm.get('width').hasError('pattern')">Enter a valid max print size in mm -x</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-4">
+                        <mat-label>Max print size in mm -z</mat-label>
+                        <input type="number" matInput [formControlName]="'height'">
+
+                        <mat-error *ngIf="configForm.get('height').hasError('required')">Max print size in mm -z is required!</mat-error>
+                        <mat-error *ngIf="configForm.get('height').hasError('pattern')">Enter a valid max print size in mm -x</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="mt-12 flex self-end">
+                    <button mat-flat-button (click)="submitForm()" class="text-white bg-[#00E0AC]">
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

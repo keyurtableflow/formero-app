@@ -1,0 +1,85 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 overflow-scroll bg-card dark:bg-transparent p-8">
+    <div class="mb-8">
+        <a class="inline-flex items-center leading-6 text-primary hover:underline" routerLink="/process/list">
+            <span class="inline-flex items-center text-[#00E0AC]">
+                <mat-icon class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:arrow-small-left'"></mat-icon>
+                <span class="ml-1.5 font-medium leading-5">Back to list</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="">
+
+        <div class="title mb-8">
+            <h2 class="text-3xl "><strong>{{processId ? 'Edit' : 'Add'}} Process</strong></h2>
+        </div>
+
+        <div class="flex flex-col pt-0">
+
+            <form [formGroup]="configForm" class="flex flex-col items-start">
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Name</mat-label>
+                        <input matInput [formControlName]="'process_name'">
+                        <mat-error>Name is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Short Name</mat-label>
+                        <input matInput [formControlName]="'short_name'">
+                        <mat-error>Short name is required!</mat-error>
+
+                    </mat-form-field>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-1/2 pr-4 col-lg-6">
+                        <mat-label>Pricing model</mat-label>
+                        <mat-select [placeholder]="'Select Pricing model'" [formControlName]="'pricing_model_id'">
+                            <mat-option [value]="pricingModel?._id"
+                                *ngFor="let pricingModel of pricingModelList">{{pricingModel.name}}</mat-option>
+                        </mat-select>
+                        <mat-error>Pricing model is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Short description</mat-label>
+                        <textarea matInput formControlName="description"></textarea>
+                        <!-- <mat-error>Short description is required!</mat-error> -->
+                    </mat-form-field>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-checkbox [color]="'primary'" [formControlName]="'instant_quote'">
+                        Instant Quote
+                    </mat-checkbox>
+                    <mat-checkbox [color]="'primary'" [formControlName]="'require_review'">
+                        Require review
+                    </mat-checkbox>
+                </div>
+
+                <div class="row flex w-full gap-8 mb-4">
+                    <input type="file" accept=".png,.jpg,.jpeg" (change)="onFileSelected($event)" style="display: none;" #fileInput>
+                    <div class="relative group" *ngIf="imagePreview">
+                      <img crossorigin="anonymous" class="max-w-24 max-h-24" [src]="imagePreview" alt="Process Image Preview">
+                      <span class="remove-icon absolute top-0 right-0 bg-white bg-opacity-70 text-black text-lg p-1 hidden group-hover:block cursor-pointer" (click)="removeImage(fileInput)">&#10005;</span>
+                    </div>
+                    <div class="flex items-end">
+                      <button mat-raised-button class="text-white bg-[#00E0AC]" type="button" (click)="fileInput.click()">Upload Image</button>
+                    </div>
+                  </div>
+
+
+            </form>
+
+            <div class="mt-12 flex self-end">
+                <button mat-raised-button (click)="submitForm()" class="text-white bg-[#00E0AC]">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

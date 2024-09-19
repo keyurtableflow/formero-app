@@ -1,0 +1,93 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 overflow-scroll bg-card dark:bg-transparent p-8">
+    <div class="mb-8">
+        <a class="inline-flex items-center leading-6 text-primary hover:underline" routerLink="/printer/list">
+            <span class="inline-flex items-center text-[#00E0AC]">
+                <mat-icon class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:arrow-small-left'"></mat-icon>
+                <span class="ml-1.5 font-medium leading-5">Back to list</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="">
+
+        <div class="title mb-8">
+            <h2 class="text-3xl "><strong>{{printerId ? 'Edit' : 'Add'}} Printer</strong></h2>
+        </div>
+
+        <div class="flex flex-col pt-0">
+
+            <form [formGroup]="printerForm" class="flex flex-col items-start">
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full sm:w-1/2  pr-4 col-lg-6">
+                        <mat-label>Printer Name</mat-label>
+                        <input matInput [formControlName]="'printer_name'">
+                        <mat-error>Printer name is required!</mat-error>
+                    </mat-form-field>
+
+                    <!-- <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Price</mat-label>
+                        <input matInput [formControlName]="'price'">
+                        <mat-error>Price is required!</mat-error>
+                    </mat-form-field> -->
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Process</mat-label>
+                        <mat-select [placeholder]="'Select Process'" [formControlName]="'processId'">
+                            <mat-option [value]="process?._id"
+                                *ngFor="let process of processList">{{process.process_name | titlecase}}</mat-option>
+                        </mat-select>
+                        <mat-error>Process is required!</mat-error>
+                    </mat-form-field>
+
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Materials</mat-label>
+                        <mat-select placeholder="Select Colour" formControlName="materials_ids" multiple>
+                            <app-select-all-option [model]="printerForm.get('materials_ids')" [values]="materialList">
+                            </app-select-all-option>
+                            <mat-option *ngFor="let material of materialList" [value]="material._id">
+                                {{ material.material_name }}</mat-option>
+                        </mat-select>
+                        <mat-error>Materials is required!</mat-error>
+                    </mat-form-field>
+
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Max print size in mm - X</mat-label>
+                        <input matInput [formControlName]="'max_size_x'">
+                        <mat-error>Max print size in mm - X is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Max print size in mm - Y</mat-label>
+                        <input matInput [formControlName]="'max_size_y'">
+                        <mat-error>Max print size in mm - Y is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full sm:w-1/2 pr-4 col-lg-6">
+                        <mat-label>Max print size in mm - Z</mat-label>
+                        <input matInput [formControlName]="'max_size_z'">
+                        <mat-error>Max print size in mm - Y is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+
+            <div class="mt-12 flex self-end">
+                <button mat-flat-button (click)="submitForm()" class="text-white bg-[#00E0AC]">
+                    Submit
+                </button>
+            </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

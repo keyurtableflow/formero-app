@@ -1,0 +1,75 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 overflow-scroll bg-card dark:bg-transparent p-8">
+    <div class="mb-8">
+        <a class="inline-flex items-center leading-6 text-primary hover:underline" routerLink="/products/list">
+            <span class="inline-flex items-center text-[#00E0AC]">
+                <mat-icon class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:arrow-small-left'"></mat-icon>
+                <span class="ml-1.5 font-medium leading-5">Back to list</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="">
+
+        <div class="title mb-8">
+            <h2 class="text-3xl "><strong>{{productId ? 'Edit' : 'Create'}} Product</strong></h2>
+        </div>
+
+        <div class="flex flex-col pt-0">
+
+            <form [formGroup]="productForm" class="flex flex-col items-start">
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Name</mat-label>
+                        <input  matInput [formControlName]="'name'">
+                        <mat-error>Name is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Unit of measurement</mat-label>
+                        <mat-select [placeholder]="'Select Unit of measurement'" [formControlName]="'measurement_id'">
+                            <mat-option [value]="measurement?._id"
+                                *ngFor="let measurement of measurementList">{{measurement?.name}}</mat-option>
+                        </mat-select>
+                        <mat-error>Unit of measurement is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Storage location</mat-label>
+                        <input  matInput [formControlName]="'storage_location'">
+                        <mat-error>Storage location is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>MSL (Minimum stock level)</mat-label>
+                        <input type="number"  matInput [formControlName]="'MSL'">
+                        <mat-error>MSL is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Storage requirement</mat-label>
+                        <textarea matInput formControlName="storage_requirement"></textarea>
+                        <mat-error>Storage requirement is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Safety requirement</mat-label>
+                        <textarea matInput formControlName="safety_requirement"></textarea>
+                        <mat-error>Safety requirement is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+            </form>
+
+            <div class="mt-12 flex self-end">
+                <button mat-raised-button (click)="submitForm()" class="text-white bg-[#00E0AC]">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

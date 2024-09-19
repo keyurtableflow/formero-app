@@ -1,0 +1,224 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent">
+    <div
+        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-4 px-6 md:px-8 border-b">
+        <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <div class="text-3xl"><strong>Edit equation</strong></div>
+        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <a class="inline-flex items-center leading-6 text-primary hover:underline"
+                (click)="navigateIfAllowed($event)">
+                <span class="inline-flex items-center text-[#00E0AC]">
+                    <mat-icon class="icon-size-5 text-current"
+                        [svgIcon]="'heroicons_solid:arrow-small-left'"></mat-icon>
+                    <span class="ml-1.5 font-medium leading-5">Back to list</span>
+                </span>
+            </a>
+        </div>
+    </div>
+
+    <div class="px-8 pt-4">
+        <div class="flex flex-col pt-0">
+            <div class="row flex w-full gap-[2em] mb-4">
+                <mat-form-field class="w-1/2 col-lg-6 fuse-mat-dense">
+                    <mat-label>Math function</mat-label>
+                    <mat-select [(value)]="selectedFunction" [placeholder]="'Select Printer'" [disabled]="!editing">
+                        <mat-option [value]="function"
+                            *ngFor="let function of equationFunctionList">{{function}}</mat-option>
+                    </mat-select>
+                    <mat-error>Function name is required!</mat-error>
+                </mat-form-field>
+                <div class="row flex justify-end w-full gap-[2em] mb-4 items-center">
+                    <button class="bg-[#00E0AC] text-white" mat-button (click)="edit()" *ngIf="!editing">Enter edit mode</button>
+                    <button class="bg-[#00E0AC] text-white" mat-button (click)="addPart()" *ngIf="editing">Add equation part</button>
+                    <button class="bg-[#00E0AC] text-white" mat-button (click)="save()" *ngIf="editing">Save</button>
+                    <button class="bg-[#00E0AC] text-white" mat-button (click)="cancle()"
+                        *ngIf="editing">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-auto overflow-hidden">
+        <div class="flex flex-auto flex-col overflow-hidden sm:mb-18">
+            <div class="overflow-x-auto">
+                <table class="min-w-full mat-elevation-z8" mat-table [dataSource]="dataSource"
+                    [cdkDropListDisabled]="!editing" cdkDropList (cdkDropListDropped)="drop($event)">
+                    <ng-container *ngIf="editing" matColumnDef="order">
+                        <mat-header-cell
+                            class="text-md font-semibold text-secondary max-w-20 pl-8 bg-gray-50 dark:bg-black dark:bg-opacity"
+                            *matHeaderCellDef> Order </mat-header-cell>
+                        <mat-cell class="pl-8 max-w-20 " *matCellDef="let element">
+                            <mat-icon class="dragCursor">reorder</mat-icon>
+                            <!-- <span>{{element.order}}</span> -->
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="type">
+                        <mat-header-cell
+                            class="text-md font-semibold text-secondary pl-8 bg-gray-50 dark:bg-black dark:bg-opacity"
+                            *matHeaderCellDef> Type </mat-header-cell>
+                        <mat-cell class="pl-8" *matCellDef="let element">
+                            <ng-container *ngIf="editing">
+                                <mat-form-field class="fuse-mat-dense w-full mt-4">
+                                    <mat-select [(value)]="element.type">
+                                        <mat-option *ngFor="let type of equationPartTypes"
+                                            [value]="type">{{type}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </ng-container>
+                            <ng-container *ngIf="!editing">
+                                {{element.type}}
+                            </ng-container>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="updated_at">
+                        <mat-header-cell
+                            class="text-md font-semibold text-secondary pl-8 bg-gray-50 dark:bg-black dark:bg-opacity"
+                            *matHeaderCellDef> Last updated </mat-header-cell>
+                        <mat-cell class="pl-8  text-ellipsis" *matCellDef="let element">
+                            <ng-container >
+                                {{element.updated_at | date:'dd/MM/yyyy hh:mm:ss a' }} {{element?.update_by ? 'By' :''}} {{element?.update_by | titlecase}}
+                            </ng-container>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="value">
+                        <mat-header-cell
+                            class="text-md font-semibold text-secondary pl-8 bg-gray-50 dark:bg-black dark:bg-opacity"
+                            *matHeaderCellDef> Value </mat-header-cell>
+                        <mat-cell class="pl-8" *matCellDef="let element">
+                            <ng-container [ngSwitch]="element.type">
+                                <ng-container *ngSwitchCase="'Operator'">
+                                    <ng-container *ngIf="editing">
+                                        <div class="w-full">
+                                            <mat-form-field class="fuse-mat-dense w-full mt-4">
+                                                <mat-select [(value)]="element.value">
+                                                    <mat-option *ngFor="let operator of operators"
+                                                        [value]="operator._id">{{operator.name}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <mat-error *ngIf="!element.value && isSubmit" class="-mt-3">Value is
+                                                required.</mat-error>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!editing">
+                                        {{getOperatorName(element.value)}}
+                                    </ng-container>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'Fixed value'">
+                                    <ng-container *ngIf="editing">
+                                        <div class="w-full">
+                                            <mat-form-field class="fuse-mat-dense w-full mt-4">
+                                                <input matInput [(ngModel)]="element.value" >
+                                            </mat-form-field>
+                                            <mat-error class="-mt-3" *ngIf="!element.value && isSubmit">Fixed value is
+                                                required.</mat-error>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!editing">
+                                        {{element.value}}
+                                    </ng-container>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'Variable'">
+                                    <ng-container *ngIf="editing">
+                                        <div class="w-full">
+                                            <div class="flex w-full">
+                                                <mat-form-field class="fuse-mat-dense w-full mt-4 mr-2">
+                                                    <mat-select [(value)]="element.value">
+                                                        <mat-option *ngFor="let variable of variableTypes"
+                                                            [value]="variable">{{variableTypeDisplayNames[variable]}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                                <mat-form-field class="fuse-mat-dense w-full mt-4">
+                                                    <mat-select [(value)]="element.variables_value">
+                                                        <mat-option
+                                                            *ngFor="let item of getDependentVariableList(element.value)"
+                                                            [value]="item._id">{{item.name}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                            <div>
+                                                <mat-error class="-mt-3"
+                                                    *ngIf="(!element.variables_value || !element.value) && isSubmit">Variable
+                                                    is required.</mat-error>
+                                            </div>
+                                        </div>
+
+
+                                    </ng-container>
+                                    <ng-container *ngIf="!editing">
+                                        {{element.value}}.{{getVariableName(element.variables_value, element.value)}}
+                                    </ng-container>
+                                </ng-container>
+                            </ng-container>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell
+                            class="text-md font-semibold text-secondary pl-8 bg-gray-50 dark:bg-black dark:bg-opacity"
+                            *matHeaderCellDef> Actions </mat-header-cell>
+                        <mat-cell class="pl-8" *matCellDef="let element; let i = index">
+                            <ng-container *ngIf="editing">
+                                <button mat-icon-button (click)="deletePart(i,element)">
+                                    <mat-icon class="text-warn">delete</mat-icon>
+                                </button>
+                            </ng-container>
+                            <ng-container *ngIf="!editing">
+                                <ng-container *ngIf="element.type == 'Sub equation'">
+                                    <button mat-icon-button [matMenuTriggerFor]="summaryMenu">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                    <mat-menu #summaryMenu="matMenu">
+                                        <button mat-menu-item (click)="editEquation(element)">
+                                            <mat-icon svgIcon="heroicons_outline:adjustments-horizontal" color="accent"
+                                                class="icon-size-4"></mat-icon>
+                                            Edit equation
+                                        </button>
+                                    </mat-menu>
+                                </ng-container>
+
+                                <ng-container *ngIf="element.type == 'Conditional block'">
+                                    <button mat-icon-button [matMenuTriggerFor]="summaryMenu">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                    <mat-menu #summaryMenu="matMenu">
+                                        <button mat-menu-item (click)="editConditionalBlock(element,conditionalType.IF)">
+                                            <mat-icon svgIcon="heroicons_outline:adjustments-horizontal"   color="accent"
+                                                class="icon-size-4"></mat-icon>
+                                            Edit IF equation
+                                        </button>
+                                        <button mat-menu-item  (click)="editConditionalBlock(element,conditionalType.THEN)" >
+                                            <mat-icon svgIcon="heroicons_outline:adjustments-horizontal" color="accent"
+                                                class="icon-size-4"></mat-icon>
+                                            Edit THEN equation
+                                        </button>
+                                        <button mat-menu-item (click)="editConditionalBlock(element,conditionalType.ELSE)">
+                                            <mat-icon svgIcon="heroicons_outline:adjustments-horizontal"   color="accent"
+                                                class="icon-size-4"></mat-icon>
+                                            Edit ELSE equation
+                                        </button>
+                                    </mat-menu>
+                                </ng-container>
+
+
+
+                            </ng-container>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row lass="bg-gray-50 h-12"
+                        *matHeaderRowDef="displayedColumns;sticky: true"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;" cdkDrag></mat-row>
+                </table>
+            </div>
+            <ng-container *ngIf="dataSource?.data?.length == 0 || !dataSource?.data">
+                <div class="p-4 border-t text-xl font-semibold text-center">There are no equation parts!</div>
+            </ng-container>
+        </div>
+    </div>
+
+
+
+</div>

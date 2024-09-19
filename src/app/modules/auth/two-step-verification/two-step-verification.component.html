@@ -1,0 +1,91 @@
+<div class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0">
+    <div class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/2 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card">
+        <div class="w-full px-[4em] mx-auto sm:mx-0">
+            <!-- Logo -->
+            <div class="w-[40%]">
+                <img src="assets/images/logo/logo.svg">
+            </div>
+
+            <!-- Title -->
+            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">Two-Step Verification</div>
+            <div class="w-20 my-[2em]">
+                <img src="assets/icons/2FA.png">
+            </div>
+            <div class="mt-0.5 font-medium">Please enter the OTP ( one time password ) to verify your account. A Code has been sent to <strong>{{phone}}</strong></div>
+
+            <!-- Alert -->
+            <fuse-alert
+                class="mt-8"
+                *ngIf="showAlert"
+                [appearance]="'outline'"
+                [showIcon]="false"
+                [type]="alert.type"
+                [@shake]="alert.type === 'error'">
+                {{alert.message}}
+            </fuse-alert>
+
+            <!-- Forgot password form -->
+            <form
+                class="mt-8"
+                [formGroup]="twoStepVerificationForm"
+                #forgotPasswordNgForm="ngForm">
+
+                <!-- otp field -->
+                <mat-form-field class="w-full">
+                    <!-- <mat-label>otp address</mat-label> -->
+                    <input
+                        id="otp"
+                        matInput
+                        [formControlName]="'otp'">
+                    <mat-error *ngIf="twoStepVerificationForm.get('otp').hasError('required')">
+                        OTP is required
+                    </mat-error>
+                    <mat-error *ngIf="twoStepVerificationForm.get('otp').hasError('otp')">
+                        Please enter a valid OTP
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Submit button -->
+                <button
+                    class="fuse-mat-button-large w-full mt-3 bg-[#00E0AC]"
+                    mat-flat-button
+                    [color]="'primary'"
+                    [disabled]="twoStepVerificationForm.disabled"
+                    (click)="verifyOTP()">
+                    <span *ngIf="!twoStepVerificationForm.disabled" class="text-white">
+                        Verify
+                    </span>
+                    <mat-progress-spinner
+                        *ngIf="twoStepVerificationForm.disabled"
+                        [diameter]="24"
+                        [mode]="'indeterminate'"></mat-progress-spinner>
+                </button>
+            </form>
+
+            <div class="flex items-baseline mt-0.5 font-medium pt-[1em]">
+                <div>Not received your code?</div>
+                <!-- <a
+                    class="ml-1 text-[#00E0AC] hover:underline cursor-pointer"
+                    (click)="resendOTP()" >Resend code
+                </a> -->
+                <a
+                    class="ml-1 text-[#00E0AC] hover:underline cursor-pointer"
+                    >Resend code
+                </a>
+            </div>
+            <div class="flex items-baseline mt-0.5 font-medium pt-[1em]">
+                <a
+                    class="ml-1 text-[#00E0AC] hover:underline cursor-pointer" [routerLink]="'/sign-in'"
+                    >Change Email/Phone
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-28 overflow-hidden bg-[#222B4E] dark:border-l">
+        <svg class="cta-section__logo animate-show" width="331" height="500" viewBox="0 0 331 283" fill="none" xmlns="http://www.w3.org/2000/svg" data-animate="up">
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M160.325 9.89987V-42L3.05176e-05 51.7658V104.185L160.325 9.89987ZM3.05176e-05 125.637L105.035 64.1352V116.468L44.5395 152.019V213.607L3.05176e-05 239.643C3.05176e-05 205.908 3.05176e-05 159.371 3.05176e-05 125.637Z" fill="#181F3A"></path>
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M51.1957 225.198L6.65625 251.148C60.1264 282.461 113.568 313.745 166.981 345L211.777 319.05C158.364 287.737 104.837 256.453 51.1957 225.198ZM230.378 308.151L125.258 246.65L169.968 220.7L230.378 255.905L283.023 225.111L327.477 251.061L230.378 308.151Z" fill="#181F3A"></path>
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M290.105 213.52L334.645 239.47C334.645 176.96 334.645 114.42 334.645 51.8523L289.849 25.9023C289.849 88.5282 289.849 151.125 289.849 213.693L290.105 213.52ZM270.992 15.0034L173.552 -42V9.89987L226.197 40.6938V111.71L270.907 137.66L270.992 15.0034Z" fill="#181F3A"></path>
+		</svg>
+    </div>
+</div>

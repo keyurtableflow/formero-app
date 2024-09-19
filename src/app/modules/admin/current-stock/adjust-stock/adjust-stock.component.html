@@ -1,0 +1,156 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 overflow-scroll bg-card dark:bg-transparent p-8">
+    <div class="mb-8">
+        <a class="inline-flex items-center leading-6 text-primary hover:underline" routerLink="/current-stock/list">
+            <span class="inline-flex items-center text-[#00E0AC]">
+                <mat-icon class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:arrow-small-left'"></mat-icon>
+                <span class="ml-1.5 font-medium leading-5">Back to list</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="">
+
+        <div class="title mb-8">
+            <h2 class="text-3xl "><strong>Adjust Stock</strong></h2>
+        </div>
+
+        <div class="flex flex-col pt-0">
+
+            <form [formGroup]="stocktForm" class="flex flex-col items-start">
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-1/2 pr-4 col-lg-6 fuse-mat-dense">
+                        <mat-label>Product</mat-label>
+                        <mat-select [formControl]="productControl" [placeholder]="'Select product'"
+                            (selectionChange)="onProductChange($event)">
+                            <mat-option [value]="product?._id"
+                                *ngFor="let product of productList">{{product?.name}}</mat-option>
+                        </mat-select>
+                        <mat-error>Product is required!</mat-error>
+                    </mat-form-field>
+                </div>
+            </form>
+
+            <div class="flex-auto">
+                <div class="w-full max-w-screen-xl">
+                    <mat-tab-group class="sm:px-2" mat-stretch-tabs="false" [animationDuration]="'0'"
+                        (selectedTabChange)="onTabChanged($event);">
+
+                        <mat-tab label="Entire stock">
+                            <ng-template matTabContent>
+                                <form [formGroup]="stocktForm" class="flex flex-col items-start">
+
+                                    <div class="row flex w-full gap-[2em] mb-4">
+                                        <mat-form-field class="w-full col-lg-6">
+                                            <mat-label>Stockable product</mat-label>
+                                            <mat-select [formControl]="stockableProductControl"
+                                                [placeholder]="'Select stockable product'"
+                                                (selectionChange)="onStockableProductChange($event)">
+                                                <mat-option [value]="stockableProduct?._id"
+                                                    *ngFor="let stockableProduct of stockableProductList">{{stockableProduct?.name}}</mat-option>
+                                            </mat-select>
+                                            <mat-error>Stockable product is required!</mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field class="w-full col-lg-6">
+                                            <mat-label>Stock item</mat-label>
+                                            <mat-select [placeholder]="'Select stock item'"
+                                                [formControlName]="'stock_id'"
+                                                (selectionChange)="onStockItemChange($event)">
+                                                <mat-option [value]="currentStock?._id"
+                                                    *ngFor="let currentStock of currentStocktList">{{currentStock?.serial_number}}</mat-option>
+                                            </mat-select>
+                                            <mat-error>Stock item is required!</mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="mt-12 flex self-end">
+                                        <button mat-raised-button (click)="submitForm()"
+                                            class="text-white bg-[#00E0AC]">
+                                            Write off stock
+                                        </button>
+                                    </div>
+
+                                </form>
+                            </ng-template>
+                        </mat-tab>
+
+                        <mat-tab label="Partial stock">
+                            <ng-template matTabContent>
+                                <form [formGroup]="stocktForm" class="flex flex-col items-start">
+
+                                    <div class="row flex w-full gap-[2em] mb-4">
+                                        <mat-form-field class="w-full col-lg-6">
+                                            <mat-label>Stockable product</mat-label>
+                                            <mat-select [placeholder]="'Select stockable product'"
+                                                [formControl]="stockableProductControl"
+                                                (selectionChange)="onStockableProductChange($event)">
+                                                <mat-option [value]="stockableProduct?._id"
+                                                    *ngFor="let stockableProduct of stockableProductList">{{stockableProduct?.name}}</mat-option>
+                                            </mat-select>
+                                            <mat-error>Stockable product is required!</mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field class="w-full col-lg-6">
+                                            <mat-label>Stock item</mat-label>
+                                            <mat-select [placeholder]="'Select stock item'"
+                                                [formControlName]="'stock_id'"
+                                                (selectionChange)="onStockItemChange($event)">
+                                                <mat-option [value]="currentStock?._id"
+                                                    *ngFor="let currentStock of currentStocktList">{{currentStock?.serial_number}}</mat-option>
+                                            </mat-select>
+                                            <mat-error>Stock item is required!</mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="row flex w-full gap-[2em] mb-4">
+                                        <mat-form-field class="w-full col-lg-6">
+                                            <mat-label>Adjust stock by: </mat-label>
+                                            <input type="number" matInput [formControlName]="'adjusted_stock'">
+                                            <mat-error>Adjust stock by is required!</mat-error>
+                                        </mat-form-field>
+
+                                        <div class="row flex w-full gap-[2em] mb-4">
+                                            <div class="content-center pt-4 w-full col-lg-6">
+                                                <ng-container
+                                                    *ngIf="stocktForm.get('adjusted_stock')?.value  && selectedStockItem?.current_stock && selectedStockItem?.productData?.measurement_id">
+                                                    <div class="rounded-lg bg-gray-200 px-5 py-4 dark:bg-gray-800">
+
+                                                        <span class="text-md font-bold"> Currently
+                                                            {{selectedStockItem?.current_stock}}
+                                                            {{getMeasurement(selectedStockItem?.productData?.measurement_id)}}
+                                                            Adjustment will leave
+                                                            {{selectedStockItem?.current_stock -
+                                                            stocktForm.get("adjusted_stock")?.value}}
+                                                            {{getMeasurement(selectedStockItem?.productData?.measurement_id)}}
+                                                            remaining </span>
+
+
+                                                    </div>
+                                                </ng-container>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="mt-12 flex self-end">
+                                        <button mat-raised-button (click)="submitForm()"
+                                            class="text-white bg-[#00E0AC]">
+                                            Adjust stock
+                                        </button>
+                                    </div>
+
+                                </form>
+                            </ng-template>
+                        </mat-tab>
+
+
+
+                    </mat-tab-group>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 overflow-scroll bg-card dark:bg-transparent p-8">
+    <div class="mb-8">
+        <a class="inline-flex items-center leading-6 text-primary hover:underline" routerLink="/measurement/list">
+            <span class="inline-flex items-center text-[#00E0AC]">
+                <mat-icon class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:arrow-small-left'"></mat-icon>
+                <span class="ml-1.5 font-medium leading-5">Back to list</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="">
+
+        <div class="title mb-8">
+            <h2 class="text-3xl "><strong>{{measurementId ? 'Edit' : 'Create'}} Measurement</strong></h2>
+        </div>
+
+        <div class="flex flex-col pt-0">
+
+            <form [formGroup]="measurementForm" class="flex flex-col items-start">
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Name</mat-label>
+                        <input placeholder="Liter" matInput [formControlName]="'name'">
+                        <mat-error>Name is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Short hand</mat-label>
+                        <input placeholder="L" matInput [formControlName]="'short_hand'">
+                        <mat-error>Short hand is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Singular</mat-label>
+                        <input placeholder="Liter" matInput [formControlName]="'singular'">
+                        <mat-error>Singular is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Plural</mat-label>
+                        <input placeholder="Liter" matInput [formControlName]="'plural'">
+                        <mat-error>Plural is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+            </form>
+
+            <div class="mt-12 flex self-end">
+                <button mat-raised-button (click)="submitForm()" class="text-white bg-[#00E0AC]">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

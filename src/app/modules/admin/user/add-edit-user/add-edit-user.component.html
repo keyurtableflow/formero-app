@@ -1,0 +1,99 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 overflow-scroll bg-card dark:bg-transparent p-8">
+    <div class="mb-8">
+        <a class="inline-flex items-center leading-6 text-primary hover:underline" routerLink="/users/list">
+            <span class="inline-flex items-center text-[#00E0AC]">
+                <mat-icon class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:arrow-small-left'"></mat-icon>
+                <span class="ml-1.5 font-medium leading-5">Back to list</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="">
+
+        <div class="title mb-8">
+            <h2 class="text-3xl "><strong>{{userId ? 'Edit User' : 'Add User'}}</strong></h2>
+        </div>
+
+        <div class="flex flex-col pt-0">
+
+            <form [formGroup]="configForm" class="flex flex-col items-start">
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-6">
+                        <mat-label>First Name</mat-label>
+                        <input matInput [formControlName]="'first_name'">
+                        <mat-error>First name is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full col-6">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput [formControlName]="'last_name'">
+                        <mat-error>Last name is required!</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Role</mat-label>
+                        <mat-select [placeholder]="'Select Role'" [formControlName]="'roleId'">
+                            <mat-option [value]="role?._id" *ngFor="let role of roleList">{{ role?.name }}</mat-option>
+                        </mat-select>
+                        <mat-error>Role is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="w-full">
+                        <mat-label>Email</mat-label>
+                        <input matInput [formControlName]="'email'">
+                        <mat-error>Email is required!</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="row flex w-full gap-[2em] mb-4">
+                    <mat-form-field class="w-full">
+                        <mat-label>Phone</mat-label>
+                        <input matInput [formControlName]="'phone'">
+                        <mat-error>Phone is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full">
+                        <mat-label>Country</mat-label>
+                        <!-- <mat-select [placeholder]="'Select Country'" [formControlName]="'country'"
+                            (selectionChange)="selectedCountry($event)">
+                            <mat-option *ngFor="let country of countryList"
+                                [value]="country.name">{{country.name}}</mat-option>
+                        </mat-select> -->
+                        <input type="text" placeholder="Pick one" aria-label="Number" matInput
+                            [formControlName]="'country'" [matAutocomplete]="auto">
+                        <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption
+                            (optionSelected)="selectedCountry($event)">
+
+                            <mat-option *ngFor="let country of filteredOptions | async"
+                                [value]="country.name">{{country.name}}</mat-option>
+
+                        </mat-autocomplete>
+                        <mat-error>Country is required!</mat-error>
+
+                    </mat-form-field>
+                </div>
+
+                <div class="row flex w-full gap-[2em] mb-4">
+
+
+                    <mat-form-field class="w-full col-lg-6">
+                        <mat-label>Country Code</mat-label>
+                        <input matInput [formControlName]="'countryCode'">
+                        <mat-error>Country code is required!</mat-error>
+                    </mat-form-field>
+
+                    <div class="w-full col-lg-6">
+
+                    </div>
+                </div>
+            </form>
+
+            <div class="mt-12 flex self-end">
+                <button mat-flat-button (click)="submit()" class="text-white bg-[#00E0AC]">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
