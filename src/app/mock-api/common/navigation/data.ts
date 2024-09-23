@@ -18,6 +18,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         children: [
             {
                 id: 'process.list',
+                title: 'sales order',
+                type: 'basic',
+                icon: 'heroicons_outline:clipboard-document-list',
+                link: '/sales',
+            },
+            {
+                id: 'process.list',
                 title: 'Process',
                 type: 'basic',
                 icon: 'heroicons_outline:clipboard-document-list',

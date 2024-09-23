@@ -1,0 +1,53 @@
+.header-section {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 5px;
+    padding: 10px;
+    background: white;
+
+    .back-icon{
+        color: #00e0ac;
+    }
+  }
+  
+  .submit-button {
+    text-align: right;
+    margin-top: 20px;
+  }
+  .main-container{
+    width: 100%;
+  }
+  .inproductionColor{
+    background-color: #00e0ac;
+    padding: 6px;
+    border-radius: 4px;
+  }
+  .unpaidColor{
+    background-color: #ff5d55;
+    padding: 6px;
+    border-radius: 4px;
+  }
+  .customer-project-info{
+    display: flex;
+    flex-direction: column;
+    gap: 5%;
+    padding: 10px;
+    background-color: white;
+  }
+  mat-tab-header{
+    background: white !important;
+  }
+  .customer-project-info-details{
+    display: flex;
+  }
+  .customer-project-info-heading{
+    display: flex;
+    gap: 5%;
+    padding: 10px;
+    background-color: white;
+  }
+  .customer-project-info-details{
+    display: flex;
+    gap: 10px;
+  }

@@ -1,0 +1,572 @@
+<div class="main-container">
+    <div class="header-section">
+        <div (click)="redirectTosales()">
+            <mat-icon class="back-icon">keyboard_backspace</mat-icon>
+        </div>
+      <h1>Sales Order XYZ - $10,000</h1>
+      <div class="inproductionColor">
+        In production
+      </div>
+      <div class="unpaidColor">
+        unpaid
+      </div>
+    </div>
+
+
+    <div class="customer-project-info-heading">
+        <div>
+          <strong>Customer</strong><br>
+          Bobs Mechanical Repairs<br>
+          Brendan Bernard<br>
+          brendan@knicventures.com<br>
+          0467 052 845
+        </div>
+        <div>
+          <strong>Project</strong><br>
+          P-00001<br>
+          Hub caps<br>
+          Start: 23/07/2024
+        </div>
+        <div>
+          <strong>Work Orders</strong><br>
+          3 / 6 completed<br>
+          Scheduled delivery: 24/08/2024<br>
+          Estimated delivery: -2 days
+        </div>
+      </div>
+      
+      <!-- Tab Structure -->
+      <mat-tab-group>
+        <mat-tab label="Quote & Invoice">
+            <ng-template mat-tab-label>
+                <mat-icon>warning</mat-icon>Quote & Invoice
+              </ng-template>
+     
+              <div class="customer-project-info">
+                <div  class="customer-project-info-details">
+                    <div>
+                        <h1>Q-#####</h1>
+                    </div>
+                        <div>
+                            open
+                        </div>
+                        <div>
+                            expire
+                        </div>
+                </div>
+                <div  class="customer-project-info-details">
+                    <div>
+                    <strong>Customer</strong><br>
+                    Bobs Mechanical Repairs<br>
+                    Brendan Bernard<br>
+                    brendan@knicventures.com<br>
+                    0467 052 845
+                    </div>
+                    <div>
+                    <strong>Project</strong><br>
+                    P-00001<br>
+                    Hub caps<br>
+                    Start: 23/07/2024
+                    </div>
+                    <div>
+                    <strong>Work Orders</strong><br>
+                    3 / 6 completed<br>
+                    Scheduled delivery: 24/08/2024<br>
+                    Estimated delivery: -2 days
+                    </div>
+              </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Pricing models - List">
+          <mat-card class="main-container">
+            <!-- Contact Details Section -->
+            <mat-card>
+                <div class="mt-6">
+                    <div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow overflow-hidden">
+                        <div class="text-xl sm:mb-4 font-bold tracking-tight leading-6 truncate">
+                            Contact details
+                        </div>
+        
+                        <div class="flex flex-col flex-auto mt-2 overflow-x-auto">
+                            <form class="flex flex-col items-start w-full"
+                                >
+                                <div
+                                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 mb-4 w-full">
+                                    <div class="col-span-1">
+                                        <mat-form-field class="w-full fuse-mat-dense">
+                                            <mat-label class="font-bold">First name</mat-label>
+                                            <input matInput  />
+                                        </mat-form-field>
+                                    </div>
+        
+                                    <div class="col-span-1">
+                                        <mat-form-field class="w-full fuse-mat-dense">
+                                            <mat-label class="font-bold">Last name</mat-label>
+                                            <input matInput />
+                                            
+                                        </mat-form-field>
+                                    </div>
+        
+                                    <div class="col-span-1">
+                                        <mat-form-field class="w-full fuse-mat-dense">
+                                            <mat-label class="font-bold">Email address</mat-label>
+                                            <input matInput />
+                                          
+                                        </mat-form-field>
+                                    </div>
+        
+                                    <div class="col-span-1">
+                                        <mat-form-field class="w-full fuse-mat-dense">
+                                            <mat-label class="font-bold">Phone number</mat-label>
+                                            <input matInput  />
+                                           
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+        
+                                <div class="w-full">
+                                    <div class="text-lg font-bold tracking-tight leading-2 truncate">
+                                        Additional contact email addresses
+                                        <span class="text-slate-400 font-normal">(optional)
+                                        </span>
+                                    </div>
+                                    <p class="mt-2 tetxt-sm text-slate-400">
+                                        Include additional contacts in email
+                                        communication about this order.
+                                        Comma-separate multiple email addresses.
+                                    </p>
+                                    <mat-form-field class="w-full mt-2 fuse-mat-dense">
+                                        <input matInput
+                                            placeholder="Enter an email..." />
+                                    </mat-form-field>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </mat-card>
+          
+            <!-- Delivery Section -->
+            <mat-card>
+                <div class="mt-6">
+                    <div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow overflow-hidden">
+                        <div class="text-xl sm:mb-4 font-bold tracking-tight leading-6 truncate">
+                            Delivery
+                        </div>
+        
+                        <div class="flex h-20">
+                            <div class="w-1/2 p-4 border-2 hover:cursor-pointer">
+                                <div>
+                                    <!-- <mat-icon class="icon-size-6"></mat-icon> -->
+                                </div>
+                                <div class="font-bold">Local pick up</div>
+                            </div>
+                            <div class="p-4 w-1/2 border-2 hover:cursor-pointer" >
+                                <div>
+                                    <!-- <mat-icon class="icon-size-6"></mat-icon> -->
+                                </div>
+                                <div class="font-bold">Ship to address</div>
+                            </div>
+                        </div>
+        
+                        <div class="mt-4">
+                            <p class="text-lg font-bold">Pick up address</p>
+                            <p class="underline flex items-center mt-1">
+                                <!-- <mat-icon class="icon-size-6"></mat-icon> -->
+                                30-32 Ceylon St, Nunawading, VIC 3131, Australia
+                            </p>
+                        </div>
+        
+                        <div class="mt-4" >
+                            <div class="flex flex-col flex-auto mt-2 overflow-x-auto">
+                                <form class="flex flex-col items-start w-full"
+                                  >
+                                    <div class="w-full sm:w-1/4 sm:pr-3">
+                                        <mat-form-field class="w-full fuse-mat-dense">
+                                            <mat-label class="font-bold">Company name
+                                                <span class="text-slate-400 font-normal">(optional)</span></mat-label>
+                                            <input matInput/>
+                                            <mat-error >Company is required!</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div
+                                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 mb-4 w-full">
+                                        <div class="col-span-1">
+                                            <mat-form-field class="w-full fuse-mat-dense">
+                                                <mat-label class="font-bold">Address line 1</mat-label>
+                                                <input matInput />
+                                                <mat-error >Address line 1 is
+                                                    required!</mat-error>
+                                            </mat-form-field>
+                                        </div>
+        
+                                        <div class="col-span-1">
+                                            <mat-form-field class="w-full fuse-mat-dense">
+                                                <mat-label class="font-bold">Address line 2
+                                                    <span class="text-slate-400 font-normal">(optional)</span></mat-label>
+                                                <input matInput />
+                                            </mat-form-field>
+                                        </div>
+        
+                                        <div class="col-span-1">
+                                            <mat-form-field class="w-full fuse-mat-dense">
+                                                <mat-label class="font-bold">City</mat-label>
+                                                <input matInput />
+                                                <mat-error>City is required!</mat-error>
+                                            </mat-form-field>
+                                        </div>
+        
+                                        <div class="col-span-1">
+                                            <mat-form-field class="w-full fuse-mat-dense">
+                                                <mat-label class="font-bold">Postal code</mat-label>
+                                                <input matInput />
+                                                <mat-error>Postal Code is
+                                                    required!</mat-error>
+                                                <mat-error >Enter a valid postal
+                                                    code!</mat-error>
+                                            </mat-form-field>
+                                        </div>
+        
+                                        <div class="col-span-1">
+                                            <!-- <mat-form-field class="w-full fuse-mat-dense">
+                                                <mat-label class="font-bold">Country</mat-label>
+                                                <input type="text" placeholder="Pick Country" aria-label="Number" matInput
+                                                    [formControlName]="'country'" [matAutocomplete]="auto" />
+                                                <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption
+                                                    (optionSelected)="
+                                                        selectedCountry($event)
+                                                    ">
+                                                    <mat-option *ngFor="
+                                                            let country of filteredOptions
+                                                                | async
+                                                        " [value]="country.name">{{
+                                                        country.name
+                                                        }}</mat-option>
+                                                </mat-autocomplete>
+                                                <mat-error *ngIf="
+                                                        localPickupForm
+                                                            .get('country')
+                                                            .hasError('required')
+                                                    ">Country is required!</mat-error>
+                                            </mat-form-field> -->
+                                        </div>
+                                    </div>
+        
+                                    <div class="mt-4 w-full">
+                                        <mat-radio-group class="w-full" [color]="'primary'"
+                                            >
+                                            <div class="border p-2 flex justify-between items-center">
+                                                <mat-radio-button class="mb-2 shipment-col" [value]="'Standard'">
+                                                    <p class="text-lg font-bold">
+                                                        Standard
+                                                    </p>
+                                                    <p>Delivered in 1-2 days</p>
+                                                </mat-radio-button>
+                                                <p class="text-lg font-bold">
+                                                    $35.00
+                                                </p>
+                                            </div>
+                                            <div class="border p-2 flex justify-between items-center">
+                                                <mat-radio-button class="mb-2" [value]="'RoadExpress'">
+                                                    <p class="text-lg font-bold">
+                                                        Road express
+                                                    </p>
+                                                    <p>Delivered next day</p>
+                                                </mat-radio-button>
+                                                <p class="text-lg font-bold">
+                                                    $45.00
+                                                </p>
+                                            </div>
+                                        </mat-radio-group>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card>
+          
+            <!-- Billing Details Section -->
+            <mat-card>
+                <div class="mt-6">
+                    <div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow overflow-hidden">
+                        <div class="text-xl sm:mb-4 font-bold tracking-tight leading-6 truncate">
+                            Billing details
+                        </div>
+        
+                        <div  class="flex flex-col -ml-2">
+                            <mat-checkbox class="mb-3" 
+                             [color]="'primary'">
+                                <span class="font-bold">Billing contact same as order contact
+                                    details</span>
+                            </mat-checkbox>
+                        </div>
+        
+                        <div>
+                            <form  class="flex flex-col items-start w-full"
+                             >
+                                <div class="w-full sm:w-1/4 sm:pr-3">
+                                    <mat-form-field class="w-full fuse-mat-dense">
+                                        <mat-label class="font-bold">Company name
+                                            <span class="text-slate-400 font-normal">(optional)</span></mat-label>
+                                        <input matInput  />
+                                        <mat-error>Company name is required!</mat-error>
+                                    </mat-form-field>
+                                </div>
+        
+                                <div
+                                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 mb-4 w-full">
+                                    <div class="col-span-1">
+                                        <mat-form-field class="w-full fuse-mat-dense">
+                                            <mat-label class="font-bold">First name</mat-label>
+                                            <input matInput  />
+                                            <mat-error >First name is required!</mat-error>
+                                        </mat-form-field>
+                                    </div>
+        
+                                    <div class="col-span-1">
+                                        <mat-form-field class="w-full fuse-mat-dense">
+                                            <mat-label class="font-bold">Last name</mat-label>
+                                            <input matInput />
+                                            <mat-error >Last name is required!</mat-error>
+                                        </mat-form-field>
+                                    </div>
+        
+                                    <div class="col-span-1">
+                                        <mat-form-field class="w-full fuse-mat-dense">
+                                            <mat-label class="font-bold">Email address</mat-label>
+                                            <input matInput />
+                                            <mat-error>Email is required</mat-error>
+                                            <mat-error >Please enter a valid
+                                                email.</mat-error>
+                                        </mat-form-field>
+                                    </div>
+        
+                                    <div class="col-span-1">
+                                        <mat-form-field class="w-full fuse-mat-dense">
+                                            <mat-label class="font-bold">Phone number</mat-label>
+                                            <input matInput />
+                                            <mat-error>Phone is required!</mat-error>
+                                            <mat-error >Enter a valid phone
+                                                number</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+        
+                        <div class="flex flex-col -ml-2 pt-3 border-t">
+                            <ng-container >
+                                <mat-checkbox class="mb-3 mt-4" 
+                                     [color]="'primary'">
+                                    <span class="font-bold">Billing address same as order delivery
+                                        details</span>
+                                </mat-checkbox>
+                            </ng-container>
+                        </div>
+        
+                        <div>
+                            <form class="flex flex-col items-start w-full"
+                              >
+                                <div
+                                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 mb-4 w-full">
+                                    <div class="col-span-1">
+                                        <mat-form-field class="w-full fuse-mat-dense">
+                                            <mat-label class="font-bold">Address Line 1</mat-label>
+                                            <input matInput  />
+                                            <mat-error >Address Line 1 is
+                                                required!</mat-error>
+                                        </mat-form-field>
+                                    </div>
+        
+                                    <div class="col-span-1">
+                                        <mat-form-field class="w-full fuse-mat-dense">
+                                            <mat-label class="font-bold">Address Line 2</mat-label>
+                                            <input matInput />
+                                        </mat-form-field>
+                                    </div>
+        
+                                    <div class="col-span-1">
+                                        <mat-form-field class="w-full fuse-mat-dense">
+                                            <mat-label class="font-bold">City</mat-label>
+                                            <input matInput/>
+                                            <mat-error >City is required!</mat-error>
+                                        </mat-form-field>
+                                    </div>
+        
+                                    <div class="col-span-1">
+                                        <mat-form-field class="w-full fuse-mat-dense">
+                                            <mat-label class="font-bold">Postal Code</mat-label>
+                                            <input matInput formControlName="pincode" />
+                                            <!-- <mat-error *ngIf="
+                                                    billingAddressForm
+                                                        .get('pincode')
+                                                        .hasError('required')
+                                                ">Postal Code is required!</mat-error>
+                                            <mat-error *ngIf="
+                                                    billingAddressForm
+                                                        .get('pincode')
+                                                        .hasError('pattern')
+                                                ">Enter a valid postal
+                                                code!</mat-error> -->
+                                        </mat-form-field>
+                                    </div>
+        
+                                    <div class="col-span-1">
+                                        <!-- <mat-form-field class="w-full fuse-mat-dense">
+                                            <mat-label class="font-bold">Country</mat-label>
+                                            <input type="text" placeholder="Pick Country" aria-label="Number" matInput
+                                                [formControlName]="'country'" [matAutocomplete]="auto2" />
+                                            <mat-autocomplete #auto2="matAutocomplete" autoActiveFirstOption
+                                                (optionSelected)="
+                                                    selectCountryBilling($event)
+                                                ">
+                                                <mat-option *ngFor="
+                                                        let country of countryBillingFilterOption
+                                                            | async
+                                                    " [value]="country.name">{{ country.name }}</mat-option>
+                                            </mat-autocomplete>
+                                            <mat-error>Country is required!</mat-error>
+                                        </mat-form-field> -->
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </mat-card>
+          
+            <!-- Notes Section -->
+            <mat-card>
+                <div class="mt-6">
+                    <div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow overflow-hidden">
+                        <div class="text-xl sm:mb-4 font-bold tracking-tight leading-6 truncate">
+                            Notes
+                        </div>
+        
+                        <div class="mt-2">
+                            <div class="font-bold">
+                                Additional notes for our team
+                                <span class="text-slate-400 font-normal">
+                                    (optional)</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-auto mt-2 overflow-x-auto">
+                            <mat-form-field class="w-full">
+                                <textarea matInput
+                                    placeholder="Put your notes here if necessary (link allowed)"
+                                    ></textarea>
+                            </mat-form-field>
+                        </div>
+        
+                        <div  class="my-3">
+                            <h3 class="font-bold">Uploaded Files:</h3>
+                            <ul class="mt-2">
+        
+                                <!-- <ng-container *ngFor="let doc of documents">
+                                    <li class="flex items-center">
+                                        <mat-icon svgIcon="heroicons_outline:paper-clip" class="mr-1"></mat-icon>
+                                        <a  class="underline cursor-pointer"> test</a>
+                                        <button *ngIf="!isAllfieldDisabled" mat-icon-button
+                                            ><mat-icon class="icon-size-5"
+                                                svgIcon="feather:trash"></mat-icon></button>
+                                    </li>
+                                </ng-container> -->
+        
+                            </ul>
+                        </div>
+        
+                        <div  class="mt-2">
+                            <label class="mr-2">
+                                <a class="bg-white border-2 border-[#00E0AC] rounded p-3 hover:bg-slate-50">
+                                    <span class="inline-flex items-center">
+                                        <span class="font-bold">
+                                            Attach File
+                                            <input type="file" id="uploadFile1"  multiple
+                                                class="hidden" />
+                                        </span>
+                                    </span>
+                                </a>
+                            </label>
+                        </div>
+        
+        
+                        <div class="mt-8">
+                            <form  class="flex flex-col items-start">
+                                <div class="text-xl sm:mb-4 font-bold tracking-tight leading-6 truncate">
+                                    Project
+                                </div>
+        
+                                <div class="mt-2" >
+                                    <p class="underline"  >Create a new
+                                        project</p>
+                                </div>
+                                <div class="w-1/4 mt-2">
+                                    <!-- <mat-form-field class="w-full col-lg-6">
+                                        <mat-label>Assign to a project</mat-label>
+                                        <mat-select [placeholder]="'Not assigned to project'"
+                                            [formControlName]="'project_id'">
+                                            <mat-option [value]="project?._id"
+                                                *ngFor="let project of projectList">{{project?.name }}</mat-option>
+                                        </mat-select>
+                                        <mat-error>project is required!</mat-error>
+                                    </mat-form-field> -->
+                                </div>
+        
+                                <div  class="w-1/4">
+                                    <mat-form-field class="w-full  col-lg-6">
+                                        <mat-label>Project Name</mat-label>
+                                        <input matInput >
+                                        <mat-error>Project name is required!</mat-error>
+                                    </mat-form-field>
+                                </div>
+        
+                                <div * class="w-1/4 flex items-center gap-2">
+                                    <mat-form-field class="w-full col-lg-6">
+                                        <mat-label>Project start date</mat-label>
+                                        <input [matDatepicker]="picker1" matInput>
+                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
+                                        <mat-error>Expiry is required!</mat-error>
+                                    </mat-form-field>
+        
+                                    <button type="button" 
+                                        class="ml-auto mr-4 border w-24 h-12 rounded-lg font-bold bg-[#00E0AC]"> Save
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </mat-card>
+          
+            <!-- Submit Button -->
+            <div class="submit-button">
+              <button mat-raised-button color="primary">Save</button>
+            </div>
+          </mat-card>
+          
+        
+        </mat-tab>
+        <mat-tab  label="3D Models">
+            <ng-template mat-tab-label>
+                <mat-icon>warning</mat-icon> 3D Models
+              </ng-template>
+            2
+        </mat-tab>
+
+        <mat-tab label="Work orders">
+            4
+        </mat-tab>
+        <mat-tab label="Shipping">
+ 
+        </mat-tab>
+        <mat-tab label="Logs">
+
+        </mat-tab>
+        <mat-tab label="Project details">
+        
+        </mat-tab>
+      </mat-tab-group>
+
+</div>
